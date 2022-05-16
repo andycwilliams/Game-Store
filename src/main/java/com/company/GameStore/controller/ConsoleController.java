@@ -1,7 +1,9 @@
 package com.company.GameStore.controller;
 
+import com.company.GameStore.exception.InvalidRequestException;
+// import com.company.GameStore.exception.NoConsoleFoundException;
 import com.company.GameStore.models.Console;
-import com.company.GameStore.models.Games;
+import com.company.GameStore.models.Game;
 import com.company.GameStore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +21,20 @@ public class ConsoleController {
     @GetMapping
     public List<Console> getAllConsoles() { return serviceLayer.findAllConsoles();}
 
-    @GetMapping(value="/{manufacturer}")
-    public List<Console> findAllConsolesByManufacturer(@PathVariable String manufacturer) { return serviceLayer.findAllConsolesByManufacturer();}
-
-//    @PostMapping
-//    public addConsole() {
-//        return serviceLayer.addConsole();
-//    }
+    @PostMapping
+    public Console addConsole(@RequestBody Console console) {
+        return serviceLayer.addConsole(console);
+    }
 
     @PutMapping(value="/{id}")
-    public updateConsole(@PathVariable int id) {
-        return serviceLayer.updateConsole(id);
+    public void updateConsole(@PathVariable int id, @RequestBody  Console console) {
+        if (console.getConsole_id() == 0) {
+            console.getConsole_id();
+        }
+        if (console.getConsole_id() != id) {
+            throw new InvalidRequestException("The given id does not match any id within the database.");
+        }
+        serviceLayer.updateConsole(console);
     }
 
     @DeleteMapping(value="/{id}")

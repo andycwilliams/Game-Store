@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -31,10 +32,10 @@ public class TShirts {
     @Size(max = 255, message = "Description cannot be over 255 characters.")
     private String description;
 
-    @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 
-    @NotNull
+    @PositiveOrZero
     private int quantity;
 
     public TShirts(int t_shirt_id, String size, String color, String description, BigDecimal price, int quantity) {
