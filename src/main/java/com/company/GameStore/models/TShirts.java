@@ -1,12 +1,18 @@
 package com.company.GameStore.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "t_shirt")
 public class TShirts {
 
     @Id
