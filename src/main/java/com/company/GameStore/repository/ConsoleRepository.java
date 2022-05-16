@@ -13,4 +13,6 @@ public interface ConsoleRepository extends JpaRepository<Console, Integer> {
 
     List<Console> findConsolesByManufacturer(String manufacturer);
 
+    List<Console> findGamesByConsoleId(int id);
+
 }
