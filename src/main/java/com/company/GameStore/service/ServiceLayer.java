@@ -8,7 +8,6 @@ import com.company.GameStore.repository.TShirtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,11 +31,21 @@ public class ServiceLayer {
         return consoleRepository.findAll();
     }
 
+    public Console findConsole(int id) {
+
+        Optional<Console> console = consoleRepository.findById(id);
+        return console.isPresent() ? console.get() : null;
+    }
+
     public List<Console> findConsolesByManufacturer(String manufacturer) {
 //        Optional<Console> console = consoleRepository.findById(manufacturer;
 //        return console.isPresent() ? findConsolesByManufacturer().get() : null;
         return consoleRepository.findConsolesByManufacturer(manufacturer);
     }
+
+//    public List<Console> findGamesByConsoleId(int id) {
+//        return gameRepository.findGamesByConsoleId(id);
+//    }
 
     public Console addConsole(Console console) {
         return consoleRepository.save(console);
@@ -48,7 +57,7 @@ public class ServiceLayer {
 
 //    @Transactional
     public void deleteConsole(int id){
-        List<Console> consoleList = gameRepository.findAllGamesByConsoleId(id);
+        List<Game> consoleList = gameRepository.findByConsoleId(id);
 //        consoleList.stream().forEach(game -> gameRepository.deleteById(game.getId()));
 
         consoleRepository.deleteById(id);

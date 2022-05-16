@@ -2,6 +2,8 @@ package com.company.GameStore.controller;
 
 import com.company.GameStore.exception.InvalidRequestException;
 // import com.company.GameStore.exception.NoConsoleFoundException;
+import com.company.GameStore.exception.NoConsoleFoundException;
+import com.company.GameStore.exception.NoGameFoundException;
 import com.company.GameStore.models.Console;
 import com.company.GameStore.models.Game;
 import com.company.GameStore.service.ServiceLayer;
@@ -18,8 +20,22 @@ public class ConsoleController {
     @Autowired
     private ServiceLayer serviceLayer;
 
+    @GetMapping(value="/{id}")
+    public Console getConsoleById(@PathVariable int id) {
+        Console console = serviceLayer.findConsole(id);
+
+        if (console == null) {
+            throw new NoConsoleFoundException("No console found matching that id.");
+        }
+        return console;
+    }
+
     @GetMapping
-    public List<Console> getAllConsoles() { return serviceLayer.findAllConsoles();}
+    public List<Console> getAllConsoles(@RequestParam(required = false) String manufacturer) {
+        if (manufacturer != null) {
+            return serviceLayer.findConsolesByManufacturer(manufacturer);
+        } else return serviceLayer.findAllConsoles();
+    }
 
     @PostMapping
     public Console addConsole(@RequestBody Console console) {
@@ -27,7 +43,7 @@ public class ConsoleController {
     }
 
     @PutMapping(value="/{id}")
-    public void updateConsole(@PathVariable int id, @RequestBody  Console console) {
+    public void updateConsole(@PathVariable int id, @RequestBody Console console) {
         if (console.getConsole_id() == 0) {
             console.getConsole_id();
         }
