@@ -3,12 +3,13 @@ package com.company.GameStore.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -17,7 +18,12 @@ public class Console {
 
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int console_id;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "albumId")
+    private Set<Game> game = new HashSet<>();
 
     @NotNull
     @Size(max = 50, message = "Model cannot be over 50 characters.")
@@ -33,32 +39,34 @@ public class Console {
     @Size(max = 20, message = "Processor cannot be over 255 characters.")
     private String processor;
 
-    @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 
-    @NotNull
+    @PositiveOrZero
     private int quantity;
 
-    public Console(int console_id, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
-        this.console_id = console_id;
-        this.model = model;
-        this.manufacturer = manufacturer;
-        this.memory_amount = memory_amount;
-        this.processor = processor;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public Console(String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
-        this.model = model;
-        this.manufacturer = manufacturer;
-        this.memory_amount = memory_amount;
-        this.processor = processor;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
     public Console() {
+    }
+
+    public Console(int console_id, Set<Game> game, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
+        this.console_id = console_id;
+        this.game = game;
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.memory_amount = memory_amount;
+        this.processor = processor;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Console(Set<Game> game, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
+        this.game = game;
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.memory_amount = memory_amount;
+        this.processor = processor;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public int getConsole_id() {
