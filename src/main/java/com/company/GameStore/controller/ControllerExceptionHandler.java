@@ -18,13 +18,6 @@ public class ControllerExceptionHandler {
         return responseEntity;
     }
 
-    @ExceptionHandler(value = NoGameFoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleNoConsoleFound(NoGameFoundException e) {
-        CustomErrorResponse error = new CustomErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
-        ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-        return responseEntity;
-    }
-
     @ExceptionHandler(value = InvalidRequestException.class)
     public ResponseEntity<CustomErrorResponse> handleInvalidRequest(InvalidRequestException e) {
         CustomErrorResponse error = new CustomErrorResponse(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
