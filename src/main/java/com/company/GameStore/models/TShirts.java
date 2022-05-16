@@ -1,13 +1,18 @@
 package com.company.GameStore.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.PositiveOrZero;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "t_shirt")
 public class TShirts {
 
     @Id
@@ -26,10 +31,10 @@ public class TShirts {
     @Size(max = 255, message = "Description cannot be over 255 characters.")
     private String description;
 
-    @PositiveOrZero
+    @NotNull
     private BigDecimal price;
 
-    @PositiveOrZero
+    @NotNull
     private int quantity;
 
     public TShirts(int t_shirt_id, String size, String color, String description, BigDecimal price, int quantity) {

@@ -1,16 +1,20 @@
 package com.company.GameStore.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Id;
-import javax.validation.constraints.PositiveOrZero;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Games {
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "game")
+public class Game {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private int game_id;
 
@@ -26,17 +30,21 @@ public class Games {
     @Size(max = 255, message = "Description cannot be over 255 characters.")
     private String description;
 
-    @PositiveOrZero
+    @NotNull
     private BigDecimal price;
+    //    price decimal(5, 2) not null,
 
     @NotNull
     @Size(max = 50, message = "Studio cannot be over 50 characters.")
     private String studio;
 
-    @PositiveOrZero
+    @NotNull
     private int quantity;
 
-    public Games(int game_id, String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
+    public Game() {
+    }
+
+    public Game(int game_id, String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
         this.game_id = game_id;
         this.title = title;
         this.esrb_rating = esrb_rating;
@@ -46,16 +54,13 @@ public class Games {
         this.quantity = quantity;
     }
 
-    public Games(String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
+    public Game(String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
         this.title = title;
         this.esrb_rating = esrb_rating;
         this.description = description;
         this.price = price;
         this.studio = studio;
         this.quantity = quantity;
-    }
-
-    public Games() {
     }
 
     public int getGame_id() {
@@ -118,8 +123,8 @@ public class Games {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Games games = (Games) o;
-        return game_id == games.game_id && quantity == games.quantity && Objects.equals(title, games.title) && Objects.equals(esrb_rating, games.esrb_rating) && Objects.equals(description, games.description) && Objects.equals(price, games.price) && Objects.equals(studio, games.studio);
+        Game game = (Game) o;
+        return game_id == game.game_id && quantity == game.quantity && Objects.equals(title, game.title) && Objects.equals(esrb_rating, game.esrb_rating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio);
     }
 
     @Override
@@ -129,7 +134,7 @@ public class Games {
 
     @Override
     public String toString() {
-        return "Games{" +
+        return "Game{" +
                 "game_id=" + game_id +
                 ", title='" + title + '\'' +
                 ", esrb_rating='" + esrb_rating + '\'' +
