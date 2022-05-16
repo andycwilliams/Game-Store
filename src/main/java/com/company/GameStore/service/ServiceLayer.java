@@ -47,9 +47,9 @@ public class ServiceLayer {
 //        return serviceLayer.findAlbum(id);
 //    }
 
-//    public void updateConsole(Console console) {
-//        consoleRepository.save(console);
-//    }
+    public void updateConsole(Console console) {
+        consoleRepository.save(console);
+    }
 
     @Transactional
     public void deleteConsole(int id){
