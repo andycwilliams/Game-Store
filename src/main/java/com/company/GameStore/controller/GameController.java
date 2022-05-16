@@ -16,27 +16,6 @@ public class GameController {
     @Autowired
     private ServiceLayer serviceLayer;
 
-    @GetMapping("/games/{studio}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByStudio(@PathVariable String studio) {
-
-        return serviceLayer.findGamesByStudio(studio);
-    }
-
-    @GetMapping("/games/{esrb}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByESRB(@PathVariable String esrb) {
-
-        return serviceLayer.findGamesByESRB(esrb);
-    }
-
-    @GetMapping("/games/{title}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByTitle(@PathVariable String title) {
-
-        return serviceLayer.findGamesByTitle(title);
-    }
-
     @GetMapping("/games/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Game getGameById(@PathVariable int id) {
@@ -50,8 +29,17 @@ public class GameController {
 
     @GetMapping("/games")
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getAllGames() {
-        return serviceLayer.findAllGames();
+    public List<Game> getAllGames (@RequestParam(required = false) String studio, @RequestParam(required = false) String esrb,
+                                   @RequestParam(required = false) String title) {
+        if (studio != null) {
+            return serviceLayer.findGamesByStudio(studio);
+        } else if (esrb != null) {
+            return serviceLayer.findGamesByEsrb(esrb);
+        } else if (title != null) {
+            return serviceLayer.findGamesByTitle(title);
+        } else {
+            return serviceLayer.findAllGames();
+        }
     }
 
     @PostMapping("/games")
