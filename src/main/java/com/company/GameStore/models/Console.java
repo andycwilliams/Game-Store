@@ -23,7 +23,7 @@ public class Console {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "albumId")
-    private Set<Games> games = new HashSet<>();
+    private Set<Game> game = new HashSet<>();
 
     @NotNull
     @Size(max = 50, message = "Model cannot be over 50 characters.")
@@ -48,9 +48,9 @@ public class Console {
     public Console() {
     }
 
-    public Console(int console_id, Set<Games> games, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
+    public Console(int console_id, Set<Game> game, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
         this.console_id = console_id;
-        this.games = games;
+        this.game = game;
         this.model = model;
         this.manufacturer = manufacturer;
         this.memory_amount = memory_amount;
@@ -59,8 +59,8 @@ public class Console {
         this.quantity = quantity;
     }
 
-    public Console(Set<Games> games, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
-        this.games = games;
+    public Console(Set<Game> game, String model, String manufacturer, String memory_amount, String processor, BigDecimal price, int quantity) {
+        this.game = game;
         this.model = model;
         this.manufacturer = manufacturer;
         this.memory_amount = memory_amount;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class Game {
     @Size(max = 255, message = "Description cannot be over 255 characters.")
     private String description;
 
-    @NotNull
+    @PositiveOrZero
     private BigDecimal price;
     //    price decimal(5, 2) not null,
 
@@ -38,7 +39,7 @@ public class Game {
     @Size(max = 50, message = "Studio cannot be over 50 characters.")
     private String studio;
 
-    @NotNull
+    @PositiveOrZero
     private int quantity;
 
     public Game() {
