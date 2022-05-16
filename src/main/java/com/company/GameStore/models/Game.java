@@ -25,7 +25,7 @@ public class Game {
 
     @NotNull
     @Size(max = 50, message = "ESRB rating cannot be over 50 characters.")
-    private String esrb_rating;
+    private String esrbRating;
 
     @NotNull
     @Size(max = 255, message = "Description cannot be over 255 characters.")
@@ -45,19 +45,19 @@ public class Game {
     public Game() {
     }
 
-    public Game(int game_id, String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
+    public Game(int game_id, String title, String esrbRating, String description, BigDecimal price, String studio, int quantity) {
         this.game_id = game_id;
         this.title = title;
-        this.esrb_rating = esrb_rating;
+        this.esrbRating = esrbRating;
         this.description = description;
         this.price = price;
         this.studio = studio;
         this.quantity = quantity;
     }
 
-    public Game(String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
+    public Game(String title, String esrbRating, String description, BigDecimal price, String studio, int quantity) {
         this.title = title;
-        this.esrb_rating = esrb_rating;
+        this.esrbRating = esrbRating;
         this.description = description;
         this.price = price;
         this.studio = studio;
@@ -80,12 +80,12 @@ public class Game {
         this.title = title;
     }
 
-    public String getEsrb_rating() {
-        return esrb_rating;
+    public String getEsrbRating() {
+        return esrbRating;
     }
 
-    public void setEsrb_rating(String esrb_rating) {
-        this.esrb_rating = esrb_rating;
+    public void setEsrbRating(String esrbRating) {
+        this.esrbRating = esrbRating;
     }
 
     public String getDescription() {
@@ -125,12 +125,12 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return game_id == game.game_id && quantity == game.quantity && Objects.equals(title, game.title) && Objects.equals(esrb_rating, game.esrb_rating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio);
+        return game_id == game.game_id && quantity == game.quantity && Objects.equals(title, game.title) && Objects.equals(esrbRating, game.esrbRating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game_id, title, esrb_rating, description, price, studio, quantity);
+        return Objects.hash(game_id, title, esrbRating, description, price, studio, quantity);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class Game {
         return "Game{" +
                 "game_id=" + game_id +
                 ", title='" + title + '\'' +
-                ", esrb_rating='" + esrb_rating + '\'' +
+                ", esrbRating='" + esrbRating + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", studio='" + studio + '\'' +
