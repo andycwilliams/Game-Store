@@ -3,6 +3,7 @@ package com.company.GameStore.models;
 import com.sun.istack.NotNull;
 
 import javax.persistence.Id;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -25,14 +26,14 @@ public class Games {
     @Size(max = 255, message = "Description cannot be over 255 characters.")
     private String description;
 
-    @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 
     @NotNull
     @Size(max = 50, message = "Studio cannot be over 50 characters.")
     private String studio;
 
-    @NotNull
+    @PositiveOrZero
     private int quantity;
 
     public Games(int game_id, String title, String esrb_rating, String description, BigDecimal price, String studio, int quantity) {
