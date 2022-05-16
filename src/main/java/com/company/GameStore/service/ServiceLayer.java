@@ -32,26 +32,20 @@ public class ServiceLayer {
         return consoleRepository.findAll();
     }
 
-//    public Console findAllConsolesByManufacturer(int id) {
-//        Optional<Console> console = consoleRepository.findById(id);
-//        return console.isPresent() ? console.get() : null;
+//    public List<Console> findConsolesByManufacturer(String manufacturer) {
+//        Optional<Console> console = consoleRepository.findById(manufacturer;
+//        return console.isPresent() ? findConsolesByManufacturer().get() : null;
 //    }
 
-//    @RequestMapping(value="/record/{id}", method= RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public AlbumViewModel getAlbumById(@PathVariable int id) {
-//        AlbumViewModel avm = serviceLayer.findAlbum(id);
-//        if (avm == null) {
-//            throw new NoRecordFoundException("Album id " + id + " not found.");
-//        }
-//        return serviceLayer.findAlbum(id);
-//    }
+    public Console addConsole(Console console) {
+        return consoleRepository.save(console);
+    }
 
     public void updateConsole(Console console) {
         consoleRepository.save(console);
     }
 
-    @Transactional
+//    @Transactional
     public void deleteConsole(int id){
 //        List<Console> consoleList = gameRepository.findAllGamesByConsoleId(id);
 //        consoleList.stream().forEach(game -> gameRepository.deleteById(game.getId()));

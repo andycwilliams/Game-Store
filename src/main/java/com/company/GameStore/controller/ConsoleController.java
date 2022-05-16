@@ -21,18 +21,10 @@ public class ConsoleController {
     @GetMapping
     public List<Console> getAllConsoles() { return serviceLayer.findAllConsoles();}
 
-    @GetMapping("/games")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Game> getAllGames() {
-        return serviceLayer.findAllGames();
+    @PostMapping
+    public Console addConsole(@RequestBody Console console) {
+        return serviceLayer.addConsole(console);
     }
-//    @GetMapping(value="/{manufacturer}")
-//    public List<Console> findAllConsolesByManufacturer(@PathVariable String manufacturer) { return serviceLayer.findAllConsolesByManufacturer();}
-
-//    @PostMapping
-//    public addConsole() {
-//        return serviceLayer.addConsole();
-//    }
 
     @PutMapping(value="/{id}")
     public void updateConsole(@PathVariable int id, @RequestBody  Console console) {
