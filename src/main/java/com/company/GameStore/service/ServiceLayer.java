@@ -40,8 +40,8 @@ public class ServiceLayer {
         return gameRepository.findByStudio(studio);
     }
 
-    public List<Game> findGamesByESRB(String esrb) {
-        return gameRepository.findByESRBRating(esrb);
+    public List<Game> findGamesByEsrb(String esrb) {
+        return gameRepository.findByEsrbRating(esrb);
     }
 
     public List<Game> findGamesByTitle(String title) {
