@@ -19,7 +19,6 @@ public class ConsoleRepositoryTests {
 
     @Before
     public void setUp() throws Exception {
-
         consoleRepository.deleteAll();
         gameRepository.deleteAll();
         tShirtRepository.deleteAll();

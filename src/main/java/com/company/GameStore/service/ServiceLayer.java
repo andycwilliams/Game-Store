@@ -32,10 +32,11 @@ public class ServiceLayer {
         return consoleRepository.findAll();
     }
 
-//    public List<Console> findConsolesByManufacturer(String manufacturer) {
+    public List<Console> findConsolesByManufacturer(String manufacturer) {
 //        Optional<Console> console = consoleRepository.findById(manufacturer;
 //        return console.isPresent() ? findConsolesByManufacturer().get() : null;
-//    }
+        return consoleRepository.findConsolesByManufacturer(manufacturer);
+    }
 
     public Console addConsole(Console console) {
         return consoleRepository.save(console);
@@ -47,7 +48,7 @@ public class ServiceLayer {
 
 //    @Transactional
     public void deleteConsole(int id){
-//        List<Console> consoleList = gameRepository.findAllGamesByConsoleId(id);
+        List<Console> consoleList = gameRepository.findAllGamesByConsoleId(id);
 //        consoleList.stream().forEach(game -> gameRepository.deleteById(game.getId()));
 
         consoleRepository.deleteById(id);
