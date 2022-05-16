@@ -49,8 +49,8 @@ public class GameControllerTest {
     @Before
     public void setUp() throws Exception {
 
-        gameInput = new Game("God of War", "MA", "Father and son adventure.", new BigDecimal("59.99"), "Santa Monica", 100);
-        gameOutput = new Game(gameId, "God of War", "MA", "Father and son adventure.", new BigDecimal("59.99"), "Santa Monica", 100);
+        gameInput = new Game("Mario", "E", "Adventure game.", new BigDecimal("59.99"), "Nintendo", 500);
+        gameOutput = new Game(gameId, "Mario", "E", "Adventure game.", new BigDecimal("59.99"), "Nintendo", 500);
         inputGameString = mapper.writeValueAsString(gameInput);
         outputGameString = mapper.writeValueAsString(gameOutput);
         allGames = Arrays.asList(gameOutput);
