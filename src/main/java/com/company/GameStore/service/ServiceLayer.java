@@ -27,6 +27,7 @@ public class ServiceLayer {
         this.gameRepository = gameRepository;
         this.tShirtRepository = tShirtRepository;
     }
+
     // --------------------------------- Console ---------------------------------
 
     public List<Console> findAllConsoles() {
