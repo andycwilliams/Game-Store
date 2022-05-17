@@ -3,9 +3,7 @@ package com.company.GameStore.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -14,11 +12,13 @@ import java.util.Objects;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "t_shirt")
-public class TShirts {
+public class TShirt {
 
     @Id
     @NotNull
-    private int t_shirt_id;
+    @Column(name = "t_shirt_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int tShirtId;
 
     @NotNull
     @Size(max = 20, message = "Size cannot be over 50 characters.")
@@ -38,8 +38,8 @@ public class TShirts {
     @PositiveOrZero
     private int quantity;
 
-    public TShirts(int t_shirt_id, String size, String color, String description, BigDecimal price, int quantity) {
-        this.t_shirt_id = t_shirt_id;
+    public TShirt(int tShirtId, String size, String color, String description, BigDecimal price, int quantity) {
+        this.tShirtId = tShirtId;
         this.size = size;
         this.color = color;
         this.description = description;
@@ -47,7 +47,7 @@ public class TShirts {
         this.quantity = quantity;
     }
 
-    public TShirts(String size, String color, String description, BigDecimal price, int quantity) {
+    public TShirt(String size, String color, String description, BigDecimal price, int quantity) {
         this.size = size;
         this.color = color;
         this.description = description;
@@ -55,15 +55,15 @@ public class TShirts {
         this.quantity = quantity;
     }
 
-    public TShirts() {
+    public TShirt() {
     }
 
-    public int getT_shirt_id() {
-        return t_shirt_id;
+    public int gettShirtId() {
+        return tShirtId;
     }
 
-    public void setT_shirt_id(int t_shirt_id) {
-        this.t_shirt_id = t_shirt_id;
+    public void settShirtId(int tShirtId) {
+        this.tShirtId = tShirtId;
     }
 
     public String getSize() {
@@ -110,19 +110,19 @@ public class TShirts {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TShirts tShirts = (TShirts) o;
-        return t_shirt_id == tShirts.t_shirt_id && quantity == tShirts.quantity && Objects.equals(size, tShirts.size) && Objects.equals(color, tShirts.color) && Objects.equals(description, tShirts.description) && Objects.equals(price, tShirts.price);
+        TShirt tShirt = (TShirt) o;
+        return tShirtId == tShirt.tShirtId && quantity == tShirt.quantity && Objects.equals(size, tShirt.size) && Objects.equals(color, tShirt.color) && Objects.equals(description, tShirt.description) && Objects.equals(price, tShirt.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(t_shirt_id, size, color, description, price, quantity);
+        return Objects.hash(tShirtId, size, color, description, price, quantity);
     }
 
     @Override
     public String toString() {
         return "TShirts{" +
-                "t_shirt_id=" + t_shirt_id +
+                "tShirtId=" + tShirtId +
                 ", size='" + size + '\'' +
                 ", color='" + color + '\'' +
                 ", description='" + description + '\'' +

@@ -31,4 +31,5 @@ public class ControllerExceptionHandler {
         ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         return responseEntity;
     }
+
 }

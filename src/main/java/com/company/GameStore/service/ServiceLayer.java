@@ -2,11 +2,13 @@ package com.company.GameStore.service;
 
 import com.company.GameStore.models.Console;
 import com.company.GameStore.models.Game;
+import com.company.GameStore.models.TShirt;
 import com.company.GameStore.repository.ConsoleRepository;
 import com.company.GameStore.repository.GameRepository;
 import com.company.GameStore.repository.TShirtRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +107,41 @@ public class ServiceLayer {
 
     // --------------------------------- T-shirt ---------------------------------
 
+    public List<TShirt> findTShirtBySize(String size) {
+        return tShirtRepository.findBySize(size);
+    }
+
+    public List<TShirt> findTShirtByColor(String color) {
+        return tShirtRepository.findByColor(color);
+    }
+
+    public List<TShirt> findTShirtBySizeAndColor(String size, String color) {
+        return tShirtRepository.findBySizeAndColor(size, color);
+    }
+
+    public List<TShirt> findAllTShirts() {
+
+        return tShirtRepository.findAll();
+    }
+
+    public TShirt findTShirt(int id) {
+        Optional<TShirt> tShirt = tShirtRepository.findById(id);
+        return tShirt.isPresent() ? tShirt.get() : null;
+    }
+
+
+    public TShirt saveTShirt(@RequestBody TShirt tShirt) {
+        return tShirtRepository.save(tShirt);
+    }
+
+    public void updateTShirt(TShirt tShirt) {
+
+        tShirtRepository.save(tShirt);
+    }
+
+    public void removeTShirt(int id) {
+
+        tShirtRepository.deleteById(id);
+    }
 
 }
