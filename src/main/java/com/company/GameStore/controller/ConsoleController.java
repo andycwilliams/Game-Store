@@ -46,6 +46,7 @@ public class ConsoleController {
         if (console.getConsole_id() != id) {
             throw new InvalidRequestException("The given id does not match any id within the database.");
         }
+
         serviceLayer.updateConsole(console);
     }
 

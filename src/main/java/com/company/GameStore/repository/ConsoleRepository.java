@@ -8,7 +8,6 @@ import java.util.List;
 
 @Component
 public interface ConsoleRepository extends JpaRepository<Console, Integer> {
-
     List<Console> findConsolesByManufacturer(String manufacturer);
 
 }

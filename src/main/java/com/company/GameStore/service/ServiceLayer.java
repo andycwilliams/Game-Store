@@ -45,10 +45,6 @@ public class ServiceLayer {
         return consoleRepository.findConsolesByManufacturer(manufacturer);
     }
 
-//    public List<Console> findGamesByConsoleId(int id) {
-//        return gameRepository.findGamesByConsoleId(id);
-//    }
-
     public Console addConsole(Console console) {
         return consoleRepository.save(console);
     }
@@ -58,10 +54,7 @@ public class ServiceLayer {
     }
 
 //    @Transactional
-    public void deleteConsole(int id){
-
-        consoleRepository.deleteById(id);
-    }
+    public void deleteConsole(int id){ consoleRepository.deleteById(id); }
 
     // --------------------------------- Game ---------------------------------
 
