@@ -3,6 +3,7 @@ package com.company.GameStore.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +14,8 @@ import java.util.Objects;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "sales_tax_rate")
 public class SalesTaxRate {
+
+    @Id
 
     @NotNull
     @Size(max = 2, message = "State cannot be over 2 characters.")

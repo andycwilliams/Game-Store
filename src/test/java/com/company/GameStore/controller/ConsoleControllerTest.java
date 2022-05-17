@@ -35,7 +35,7 @@ public class ConsoleControllerTest {
     public void setUp() throws Exception {
         Set<Game> inputGames = new HashSet<Game>();
         inputGames.add(new Game("God of War", "MA", "Father and son adventure.", new BigDecimal("59.99"), "Santa Monica", 100));
-        Console inputConsole = new Console(1, inputGames, "Model", "Sony", "100", "Processor", new BigDecimal("499.99"), 7);
+        Console inputConsole = new Console(1, "Model", "Sony", "100", "Processor", new BigDecimal("499.99"), 7);
 
     }
 

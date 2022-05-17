@@ -59,8 +59,6 @@ public class ServiceLayer {
 
 //    @Transactional
     public void deleteConsole(int id){
-        List<Game> consoleList = gameRepository.findByConsoleId(id);
-//        consoleList.stream().forEach(game -> gameRepository.deleteById(game.getId()));
 
         consoleRepository.deleteById(id);
     }
