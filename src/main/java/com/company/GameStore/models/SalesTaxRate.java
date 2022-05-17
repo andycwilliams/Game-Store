@@ -16,6 +16,7 @@ import java.util.Objects;
 public class SalesTaxRate {
 
     @Id
+
     @NotNull
     @Size(max = 2, message = "State cannot be over 2 characters.")
     private String state;

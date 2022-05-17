@@ -30,8 +30,10 @@ public class GameRepositoryTest {
     @Before
     public void setUp() throws Exception {
         gameRepository.deleteAll();
-
-        game = new Game();
+    }
+  
+    @Test
+    public void getAllGames() throws Exception {
         game.setTitle("God of War");
         game.setEsrbRating("MA");
         game.setDescription("Father and son adventure.");
@@ -112,6 +114,24 @@ public class GameRepositoryTest {
 
     @Test
     public void updateGame() {
+        Game game = new Game();
+        game.setTitle("God of War");
+        game.setEsrbRating("MA");
+        game.setDescription("Father and son adventure.");
+        game.setPrice(new BigDecimal("59.99"));
+        game.setStudio("Santa Monica");
+        game.setQuantity(100);
+
+        game = gameRepository.save(game);
+
+        game.setTitle("Call of Duty");
+        game.setEsrbRating("T");
+        game.setDescription("Battle royale simulator.");
+        game.setPrice(new BigDecimal("49.99"));
+        game.setStudio("Activision");
+        game.setQuantity(40);
+
+        gameRepository.save(game);
 
         Optional<Game> game1 = gameRepository.findById(game.getGame_id());
         assertEquals(game1.get(), game);
