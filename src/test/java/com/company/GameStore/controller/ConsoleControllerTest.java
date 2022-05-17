@@ -33,8 +33,8 @@ public class ConsoleControllerTest {
 
     private Console consoleInput;
     private Console consoleOutput;
-    private String inputConsoleString;
-    private String outputConsoleString;
+    private String consoleInputString;
+    private String consoleOutputString;
     private List<Console> allConsoles;
     private String allConsolesString;
 
@@ -48,11 +48,10 @@ public class ConsoleControllerTest {
 
     @Before
     public void setUp() throws Exception {
-
         consoleInput = new Console("Playstation 5", "Sony", "100", "Processor", new BigDecimal("499.99"), 7);
         consoleOutput = new Console(consoleId,"Playstation 5", "Sony", "100", "Processor", new BigDecimal("499.99"), 7);
-        inputConsoleString = mapper.writeValueAsString(consoleInput);
-        outputConsoleString = mapper.writeValueAsString(consoleOutput);
+        consoleInputString = mapper.writeValueAsString(consoleInput);
+        consoleOutputString = mapper.writeValueAsString(consoleOutput);
         allConsoles = Arrays.asList(consoleOutput);
         allConsolesString = mapper.writeValueAsString(allConsoles);
 
@@ -74,23 +73,23 @@ public class ConsoleControllerTest {
         mockMvc.perform(get("/console/" + consoleId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(outputConsoleString));
+                .andExpect(content().json(consoleOutputString));
     }
 
     @Test
     public void shouldAddConsole() throws Exception {
         mockMvc.perform(post("/console/")
-                    .content(inputConsoleString)
+                    .content(consoleInputString)
                     .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().json(outputConsoleString));
+                .andExpect(content().json(consoleOutputString));
     }
 
     @Test
     public void shouldUpdateConsole() throws Exception {
         mockMvc.perform(put("/console/" + consoleId)
-                    .content(outputConsoleString)
+                    .content(consoleInputString)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -113,7 +112,7 @@ public class ConsoleControllerTest {
     @Test
     public void shouldGetUnprocessableEntityWhenPutConsoleByInvalidId() throws Exception {
         mockMvc.perform(put("/console/" + badConsoleId)
-                        .content(outputConsoleString)
+                        .content(consoleOutputString)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
