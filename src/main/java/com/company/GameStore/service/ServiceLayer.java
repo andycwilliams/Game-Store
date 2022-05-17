@@ -1,14 +1,22 @@
 package com.company.GameStore.service;
 
+import com.company.GameStore.exception.InvalidRequestException;
+import com.company.GameStore.models.*;
+import com.company.GameStore.repository.*;
+
 import com.company.GameStore.models.Console;
 import com.company.GameStore.models.Game;
 import com.company.GameStore.models.TShirt;
 import com.company.GameStore.repository.ConsoleRepository;
 import com.company.GameStore.repository.GameRepository;
 import com.company.GameStore.repository.TShirtRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +27,8 @@ public class ServiceLayer {
     private ConsoleRepository consoleRepository;
     private GameRepository gameRepository;
     private TShirtRepository tShirtRepository;
+    private SalesTaxRateRepository salesTaxRateRepository;
+    private ProcessingFeeRepository processingFeeRepository;
 
     @Autowired
     public ServiceLayer(ConsoleRepository consoleRepository,GameRepository gameRepository,
@@ -27,6 +37,7 @@ public class ServiceLayer {
         this.gameRepository = gameRepository;
         this.tShirtRepository = tShirtRepository;
     }
+
     // --------------------------------- Console ---------------------------------
 
     public List<Console> findAllConsoles() {
@@ -45,10 +56,6 @@ public class ServiceLayer {
         return consoleRepository.findConsolesByManufacturer(manufacturer);
     }
 
-//    public List<Console> findGamesByConsoleId(int id) {
-//        return gameRepository.findGamesByConsoleId(id);
-//    }
-
     public Console addConsole(Console console) {
         return consoleRepository.save(console);
     }
@@ -58,12 +65,7 @@ public class ServiceLayer {
     }
 
 //    @Transactional
-    public void deleteConsole(int id){
-        List<Game> consoleList = gameRepository.findByConsoleId(id);
-//        consoleList.stream().forEach(game -> gameRepository.deleteById(game.getId()));
-
-        consoleRepository.deleteById(id);
-    }
+    public void deleteConsole(int id){ consoleRepository.deleteById(id); }
 
     // --------------------------------- Game ---------------------------------
 
@@ -144,4 +146,61 @@ public class ServiceLayer {
         tShirtRepository.deleteById(id);
     }
 
+    // --------------------------------- Invoice ---------------------------------
+    public Invoice saveInvoice(Invoice invoice) {
+
+        // --------------------------------- Initial business rule check ---------------------------------
+
+        if (invoice.getQuantity() <= 0) {
+            throw new InvalidRequestException(); // Placeholder error until testing
+        }
+
+        // --------------------------------- Match item type and set processing fee ---------------------------------
+
+        if (invoice.getItemType().equals("Console")) {
+            Console console = consoleRepository.getById(invoice.getId());
+
+        } else if (invoice.getItemType().equals("Game")) {
+            Game game = gameRepository.getById(invoice.getItemId());
+            invoice.setUnitPrice(game.getPrice());
+
+            // ------------------------------ Inventory management ------------------------------
+
+            if (invoice.getQuantity() < game.getQuantity()) {
+                throw new InvalidRequestException(); // Placeholder error until testing
+            }
+            game.setQuantity(game.getQuantity() - invoice.getQuantity());
+            gameRepository.save(game);
+
+            // ------------------------------ Processing fee management ------------------------------
+
+            if (invoice.getQuantity() > 10) {
+                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee().add(new BigDecimal("15.49")));
+            } else {
+                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
+            }
+
+        } else if (invoice.getItemType().equals("T-Shirt")) {
+            TShirts tShirts = tShirtRepository.getById(invoice.getId());
+        }
+
+        // --------------------------------- Set invoice ---------------------------------
+
+        Invoice purchase = new Invoice();
+        purchase.setName(invoice.getName());
+        purchase.setStreet(invoice.getStreet());
+        purchase.setCity(invoice.getCity());
+        purchase.setState(invoice.getState());
+        purchase.setZipCode(invoice.getZipCode());
+        purchase.setItemType(invoice.getItemType());
+        purchase.setItemId(purchase.getItemId());
+        purchase.setUnitPrice(invoice.getUnitPrice());
+        purchase.setQuantity(invoice.getQuantity());
+        purchase.setSubtotal(purchase.getUnitPrice().multiply(BigDecimal.valueOf(purchase.getQuantity())));
+        purchase.setTax(salesTaxRateRepository.findById(purchase.getState()).get().getRate());
+        purchase.setProcessingFee(invoice.getProcessingFee());
+        purchase.setTotal(purchase.getSubtotal().add(purchase.getTax().add(purchase.getProcessingFee())));
+
+        return purchase;
+    }
 }

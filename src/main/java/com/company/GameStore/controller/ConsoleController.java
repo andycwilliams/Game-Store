@@ -1,14 +1,10 @@
 package com.company.GameStore.controller;
 
 import com.company.GameStore.exception.InvalidRequestException;
-// import com.company.GameStore.exception.NoConsoleFoundException;
 import com.company.GameStore.exception.NoConsoleFoundException;
-import com.company.GameStore.exception.NoGameFoundException;
 import com.company.GameStore.models.Console;
-import com.company.GameStore.models.Game;
 import com.company.GameStore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +46,7 @@ public class ConsoleController {
         if (console.getConsole_id() != id) {
             throw new InvalidRequestException("The given id does not match any id within the database.");
         }
+
         serviceLayer.updateConsole(console);
     }
 

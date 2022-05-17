@@ -91,12 +91,12 @@ public class GameRepositoryTest {
         assertEquals(game.size(), 1);
     }
 
-    @Test
-    public void getAllGames() throws Exception {
-
-        List<Game> gameList = gameRepository.findAll();
-        assertEquals(gameList.size(), 4);
-    }
+//    @Test
+//    public void getAllGames() throws Exception {
+//
+//        List<Game> gameList = gameRepository.findAll();
+//        assertEquals(gameList.size(), 4);
+//    }
 
     @Test
     public void getDeleteGame() {
