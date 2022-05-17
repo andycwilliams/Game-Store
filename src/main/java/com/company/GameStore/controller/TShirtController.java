@@ -1,7 +1,6 @@
 package com.company.GameStore.controller;
 
 import com.company.GameStore.exception.InvalidRequestException;
-import com.company.GameStore.models.Game;
 import com.company.GameStore.models.TShirt;
 import com.company.GameStore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class TShirtController {
         if (color != null) {
             return serviceLayer.findTShirtByColor(color);
         // checking to see if search by size of shirt
-        } else if (size != size) {
+        } else if (size != null) {
             return serviceLayer.findTShirtBySize(size);
         //return size and color.
         } else if(size != null && color != null) {
