@@ -3,6 +3,7 @@ package com.company.GameStore.service;
 import com.company.GameStore.controller.ConsoleController;
 import com.company.GameStore.models.*;
 import com.company.GameStore.repository.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class ServiceLayerTest {
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository, salesTaxRateRepository, processingFeeRepository);
     }
+
     private void setUpConsoleRepositoryMock() {
         consoleRepository = mock(ConsoleRepository.class);
         Console console = new Console();
@@ -112,14 +114,14 @@ public class ServiceLayerTest {
 
     // --------------------------------- Console ---------------------------------
 
-//    @Test
-//    public void shouldFindAllConsoles() {
-//        List<Console> fromService = service.findAllConsoles();
-//        assertEquals(4, fromService.size());
-//    }
+    @Test
+    public void shouldFindAllConsoles() {
+        List<Console> fromService = service.findAllConsoles();
+        assertEquals(1, fromService.size());
+    }
 
 //    @Test
-//    public void shouldFindConsole() {
+//        public void shouldFindConsoleById() {
 //    }
 
 //    @Test
@@ -152,10 +154,12 @@ public class ServiceLayerTest {
     }
 
 //    @Test
-//    public void shouldUpdateConsole() {
+//        public void shouldUpdateConsole() {
 //    }
+
 //    @Test
-//    public void shouldDeleteConsole() {
+//        public void shouldDeleteConsole() {
+//        // Delete returns void, so no test
 //    }
 
     // --------------------------------- Game ---------------------------------
@@ -268,6 +272,33 @@ public class ServiceLayerTest {
     }
 
     // --------------------------------- T-Shirt ---------------------------------
+//    private void setUpTShirtRepositoryMock() {
+//        tShirtRepository = mock(TShirtRepository.class);
+//        TShirt tShirt = new TShirt();
+//        tShirt.setGame_id(33);
+//        tShirt.setTitle("God of War");
+//        tShirt.setEsrbRating("MA");
+//        tShirt.setDescription("Father and son adventure.");
+//        tShirt.setPrice(new BigDecimal("59.99"));
+//        tShirt.setStudio("Santa Monica");
+//        tShirt.setQuantity(100);
+//
+//        List tShirtList = new ArrayList();
+//        tShirtList.add(tShirt);
+//
+//        TShirt tShirt2 = new TShirt();
+//        tShirt2.setTitle("God of War");
+//        tShirt2.setEsrbRating("MA");
+//        tShirt2.setDescription("Father and son adventure.");
+//        tShirt2.setPrice(new BigDecimal("59.99"));
+//        tShirt2.setStudio("Santa Monica");
+//        tShirt2.setQuantity(100);
+//
+//        TShirt actualResult = service.saveTShirt(tShirt);
+//
+//        assertEquals(expectedResult, actualResult);
+//    }
+
 
     // --------------------------------- Invoice ---------------------------------
 

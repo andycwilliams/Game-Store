@@ -48,14 +48,11 @@ public class ServiceLayer {
     }
 
     public Console findConsole(int id) {
-
         Optional<Console> console = consoleRepository.findById(id);
         return console.isPresent() ? console.get() : null;
     }
 
     public List<Console> findConsolesByManufacturer(String manufacturer) {
-//        Optional<Console> console = consoleRepository.findById(manufacturer;
-//        return console.isPresent() ? findConsolesByManufacturer().get() : null;
         return consoleRepository.findByManufacturer(manufacturer);
     }
 

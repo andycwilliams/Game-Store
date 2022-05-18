@@ -20,7 +20,18 @@ public class TShirtController {
     @ResponseStatus(HttpStatus.OK)
     public List<TShirt> getAllTShirts(@RequestParam (required = false) String size, @RequestParam(required = false) String color) {
        //checking to see if you can search tshirts by color
+        if (color != null) {
+            return serviceLayer.findTShirtByColor(color);
+            // checking to see if search by size of shirt
+        } else if (size != null) {
+            return serviceLayer.findTShirtBySize(size);
+            //return size and color.
+        } else if(size != null && color != null) {
+            return serviceLayer.findTShirtBySizeAndColor(size, color);
+            //Returns all shirts
+        }else {
             return serviceLayer.findAllTShirts();
+        }
     }
 
     @GetMapping(value = "/tshirts/{id}")
@@ -42,7 +53,7 @@ public class TShirtController {
 
     @PutMapping("/tshirts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTShirt(@PathVariable int id, @RequestBody TShirt tShirt) throws NoTShirtFoundException {
+    public void updateTShirt(@PathVariable int id, @RequestBody TShirt tShirt) {
 
         if (tShirt.gettShirtId() == 0) {
             tShirt.settShirtId(id);
@@ -57,6 +68,16 @@ public class TShirtController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeTShirt(@PathVariable int id) {
         serviceLayer.removeTShirt(id);
+    }
+
+    @GetMapping("/tshirts/size/{size}")
+    public List<TShirt> getTShirtsBySize(@PathVariable String size) {
+        return serviceLayer.findTShirtBySize(size);
+    }
+
+    @GetMapping("/tshirts/color/{color}")
+    public List<TShirt> getTShirtsByColor(@PathVariable String color) {
+        return serviceLayer.findTShirtByColor(color);
     }
 
     //end
