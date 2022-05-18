@@ -37,6 +37,7 @@ public class ServiceLayer {
         this.gameRepository = gameRepository;
         this.tShirtRepository = tShirtRepository;
     }
+
     // --------------------------------- Console ---------------------------------
 
     public List<Console> findAllConsoles() {
@@ -52,12 +53,8 @@ public class ServiceLayer {
     public List<Console> findConsolesByManufacturer(String manufacturer) {
 //        Optional<Console> console = consoleRepository.findById(manufacturer;
 //        return console.isPresent() ? findConsolesByManufacturer().get() : null;
-        return consoleRepository.findConsolesByManufacturer(manufacturer);
+        return consoleRepository.findByManufacturer(manufacturer);
     }
-
-//    public List<Console> findGamesByConsoleId(int id) {
-//        return gameRepository.findGamesByConsoleId(id);
-//    }
 
     public Console addConsole(Console console) {
         return consoleRepository.save(console);
@@ -67,11 +64,7 @@ public class ServiceLayer {
         consoleRepository.save(console);
     }
 
-//    @Transactional
-    public void deleteConsole(int id){
-
-        consoleRepository.deleteById(id);
-    }
+    public void deleteConsole(int id){ consoleRepository.deleteById(id); }
 
     // --------------------------------- Game ---------------------------------
 
@@ -137,7 +130,6 @@ public class ServiceLayer {
         return tShirt.isPresent() ? tShirt.get() : null;
     }
 
-
     public TShirt saveTShirt(@RequestBody TShirt tShirt) {
         return tShirtRepository.save(tShirt);
     }
@@ -187,7 +179,7 @@ public class ServiceLayer {
             }
 
         } else if (invoice.getItemType().equals("T-Shirt")) {
-            TShirts tShirts = tShirtRepository.getById(invoice.getId());
+            TShirt tShirts = tShirtRepository.getById(invoice.getId());
         }
 
         // --------------------------------- Set invoice ---------------------------------

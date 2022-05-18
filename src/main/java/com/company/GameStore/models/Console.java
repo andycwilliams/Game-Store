@@ -18,7 +18,7 @@ public class Console {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int console_id;
 
     @NotNull
