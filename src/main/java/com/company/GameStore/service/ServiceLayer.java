@@ -130,7 +130,7 @@ public class ServiceLayer {
         return tShirt.isPresent() ? tShirt.get() : null;
     }
 
-    public TShirt saveTShirt(@RequestBody TShirt tShirt) {
+    public TShirt saveTShirt(TShirt tShirt) {
         return tShirtRepository.save(tShirt);
     }
 
