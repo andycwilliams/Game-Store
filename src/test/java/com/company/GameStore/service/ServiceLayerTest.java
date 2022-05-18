@@ -94,14 +94,14 @@ public class ServiceLayerTest {
 
     // --------------------------------- Console ---------------------------------
 
-//    @Test
-//    public void shouldFindAllConsoles() {
-//        List<Console> fromService = service.findAllConsoles();
-//        assertEquals(4, fromService.size());
-//    }
+    @Test
+    public void shouldFindAllConsoles() {
+        List<Console> fromService = service.findAllConsoles();
+        assertEquals(1, fromService.size());
+    }
 
 //    @Test
-//    public void shouldFindConsole() {
+//        public void shouldFindConsoleById() {
 //    }
 
 //    @Test
@@ -134,10 +134,12 @@ public class ServiceLayerTest {
     }
 
 //    @Test
-//    public void shouldUpdateConsole() {
+//        public void shouldUpdateConsole() {
 //    }
+
 //    @Test
-//    public void shouldDeleteConsole() {
+//        public void shouldDeleteConsole() {
+//        // Delete returns void, so no test
 //    }
 
     // --------------------------------- Game ---------------------------------
