@@ -63,7 +63,6 @@ public class TShirtRepositoryTest {
 
         tShirt = tShirtRepository.save(tShirt);
 
-        tShirt.settShirtId(1);
         tShirt.setSize("Medium");
         tShirt.setColor("Red");
         tShirt.setDescription("This shirt is red");
@@ -73,7 +72,6 @@ public class TShirtRepositoryTest {
 
         Optional<TShirt> tShirts1 = tShirtRepository.findById(tShirt.gettShirtId());
         assertEquals(tShirts1.get(), tShirt);
-
     }
     @Test
     public void addAndGetTShirtThenDelete() {

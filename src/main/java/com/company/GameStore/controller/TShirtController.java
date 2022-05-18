@@ -53,7 +53,7 @@ public class TShirtController {
 
     @PutMapping("/tshirts/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTShirt(@PathVariable int id, @RequestBody TShirt tShirt) throws InvalidRequestException {
+    public void updateTShirt(@PathVariable int id, @RequestBody TShirt tShirt) {
 
         if (tShirt.gettShirtId() == 0) {
             tShirt.settShirtId(id);
