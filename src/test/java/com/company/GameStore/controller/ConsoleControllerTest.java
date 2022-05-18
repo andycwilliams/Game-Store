@@ -38,7 +38,7 @@ public class ConsoleControllerTest {
     private List<Console> allConsoles;
     private String allConsolesString;
 
-    private String manufacturer = "Sony";
+//    private String manufacturer;
     private int consoleId = 77;
     private int badConsoleId = 444;
     private ObjectMapper mapper = new ObjectMapper();
@@ -89,7 +89,7 @@ public class ConsoleControllerTest {
     @Test
     public void shouldUpdateConsole() throws Exception {
         mockMvc.perform(put("/console/" + consoleId)
-                    .content(consoleInputString)
+                    .content(consoleOutputString)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -103,14 +103,14 @@ public class ConsoleControllerTest {
     }
 
     @Test
-    public void shouldGet404WhenGetConsoleByInvalidId() throws Exception {
+    public void shouldReturn404WhenGetConsoleByInvalidId() throws Exception {
         mockMvc.perform(get("/console/" + badConsoleId))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void shouldGetUnprocessableEntityWhenPutConsoleByInvalidId() throws Exception {
+    public void shouldReturn422WhenPutConsoleByInvalidId() throws Exception {
         mockMvc.perform(put("/console/" + badConsoleId)
                         .content(consoleOutputString)
                         .contentType(MediaType.APPLICATION_JSON))

@@ -8,6 +8,8 @@ import com.company.GameStore.repository.GameRepository;
 import com.company.GameStore.repository.TShirtRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class ServiceLayerTest {
 
     @Before
     public void setUp() throws Exception {
-
+        setUpConsoleRepositoryMock();
         setUpGameRepositoryMock();
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository);
@@ -91,20 +93,49 @@ public class ServiceLayerTest {
 
 //    @Test
 //    public void shouldFindAllConsoles() {
-//        List<Console> fromService = service.findAll();
+//        List<Console> fromService = service.findAllConsoles();
 //        assertEquals(4, fromService.size());
 //    }
 
 //    @Test
-//    public void shouldFindConsole() {}
+//    public void shouldFindConsole() {
+//    }
+
 //    @Test
-//    public void shouldFindConsolesByManufacturer() {}
+//    public List<Console> shouldFindConsolesByManufacturer(@PathVariable String manufacturer) {
+//        return consoleRepository.findByManufacturer(manufacturer);
+//    }
+
+    @Test
+    public void shouldAddConsole() {
+        Console console = new Console();
+        console.setModel("Playstation 5");
+        console.setManufacturer("Sony");
+        console.setMemory_amount("99");
+        console.setProcessor("Processor Test");
+        console.setPrice(new BigDecimal("899.99"));
+        console.setQuantity(31);
+
+        Console expectedResult = new Console();
+        expectedResult.setConsole_id(1);
+        expectedResult.setModel("Playstation 5");
+        expectedResult.setManufacturer("Sony");
+        expectedResult.setMemory_amount("99");
+        expectedResult.setProcessor("Processor Test");
+        expectedResult.setPrice(new BigDecimal("899.99"));
+        expectedResult.setQuantity(31);
+
+        Console actualResult = service.addConsole(console);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
 //    @Test
-//    public void shouldAddConsole() {}
+//    public void shouldUpdateConsole() {
+//    }
 //    @Test
-//    public void shouldUpdateConsole() {}
-//    @Test
-//    public void shouldDeleteConsole() {}
+//    public void shouldDeleteConsole() {
+//    }
 
     // --------------------------------- Game ---------------------------------
 
