@@ -17,7 +17,7 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
-    private int game_id;
+    private Integer game_id;
 
     @NotNull
     @Size(max = 50, message = "Title cannot be over 50 characters.")
@@ -45,7 +45,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(int game_id, String title, String esrbRating, String description, BigDecimal price, String studio, int quantity) {
+    public Game(Integer game_id, String title, String esrbRating, String description, BigDecimal price, String studio, int quantity) {
         this.game_id = game_id;
         this.title = title;
         this.esrbRating = esrbRating;
@@ -64,11 +64,11 @@ public class Game {
         this.quantity = quantity;
     }
 
-    public int getGame_id() {
+    public Integer getGame_id() {
         return game_id;
     }
 
-    public void setGame_id(int game_id) {
+    public void setGame_id(Integer game_id) {
         this.game_id = game_id;
     }
 
@@ -125,7 +125,7 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return game_id == game.game_id && quantity == game.quantity && Objects.equals(title, game.title) && Objects.equals(esrbRating, game.esrbRating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio);
+        return quantity == game.quantity && Objects.equals(game_id, game.game_id) && Objects.equals(title, game.title) && Objects.equals(esrbRating, game.esrbRating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio);
     }
 
     @Override
