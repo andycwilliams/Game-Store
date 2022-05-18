@@ -4,10 +4,13 @@ import com.company.GameStore.controller.ConsoleController;
 import com.company.GameStore.models.*;
 import com.company.GameStore.repository.*;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class ServiceLayerTest {
         setUpGameRepositoryMock();
         setUpProcessingFeeRepositoryMock();
         setUpSalesTaxRepositoryMock();
+        setUpTShirtRepositoryMock();
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository, salesTaxRateRepository, processingFeeRepository);
     }
@@ -63,6 +67,7 @@ public class ServiceLayerTest {
         doReturn(console).when(consoleRepository).save(console2);
         doReturn(Optional.of(console)).when(consoleRepository).findById(1);
         doReturn(consoleList).when(consoleRepository).findAll();
+//        when(gameRepository.findByManufacturer("Sony")).thenReturn(consoleList);
     }
 
     private void setUpGameRepositoryMock() {
@@ -112,6 +117,32 @@ public class ServiceLayerTest {
         when(salesTaxRateRepository.findById("IL")).thenReturn(Optional.of(salesTaxRate));
     }
 
+    private void setUpTShirtRepositoryMock() {
+        tShirtRepository = mock(TShirtRepository.class);
+        TShirt tShirt = new TShirt();
+        tShirt.settShirtId(1);
+        tShirt.setSize("Large");
+        tShirt.setPrice(BigDecimal.valueOf(10.99));
+        tShirt.setQuantity(100);
+        tShirt.setDescription("This shirt is purple");
+        tShirt.setColor("Purple");
+
+        List tShirtList = new ArrayList();
+        tShirtList.add(tShirt);
+
+        TShirt tShirt2 = new TShirt();
+        tShirt2.settShirtId(2);
+        tShirt2.setSize("Large");
+        tShirt2.setPrice(BigDecimal.valueOf(11.99));
+        tShirt2.setQuantity(105);
+        tShirt2.setDescription("This shirt is yellow");
+        tShirt2.setColor("Yellow");
+
+        doReturn(tShirt).when(tShirtRepository).save(tShirt2);
+        doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(4);
+        doReturn(tShirtList).when(tShirtRepository).findAll();
+    }
+
     // --------------------------------- Console ---------------------------------
 
     @Test
@@ -120,16 +151,30 @@ public class ServiceLayerTest {
         assertEquals(1, fromService.size());
     }
 
-//    @Test
-//        public void shouldFindConsoleById() {
-//    }
+    @Test
+    public void shouldFindConsole() {
+        Console expectedResult = new Console();
+        expectedResult.setConsole_id(1);
+        expectedResult.setModel("Playstation 5");
+        expectedResult.setManufacturer("Sony");
+        expectedResult.setMemory_amount("99");
+        expectedResult.setProcessor("Processor Test");
+        expectedResult.setPrice(new BigDecimal("899.99"));
+        expectedResult.setQuantity(31);
 
-//    @Test
-//    public List<Console> shouldFindConsolesByManufacturer(@PathVariable String manufacturer) {
-//        return consoleRepository.findByManufacturer(manufacturer);
-//    }
+        Console actualResult = service.findConsole(1);
+
+        assertEquals(expectedResult, actualResult);
+    }
 
     @Test
+    public void shouldFindConsolesByManufacturer() throws Exception {
+        List<Console> consoleList = consoleRepository.findByManufacturer("Sony");
+        Assert.assertEquals(2, consoleList.size());
+    }
+
+    @Test
+    @ResponseStatus(HttpStatus.CREATED)
     public void shouldAddConsole() {
         Console console = new Console();
         console.setModel("Playstation 5");
@@ -154,13 +199,56 @@ public class ServiceLayerTest {
     }
 
 //    @Test
-//        public void shouldUpdateConsole() {
+//    public void shouldUpdateConsole() {
+//        Console console = new Console();
+//        console.setModel("Burger King Console");
+//        console.setManufacturer("Burger King");
+//        console.setMemory_amount("6000");
+//        console.setProcessor("BK Processor");
+//        console.setPrice(new BigDecimal("999.99"));
+//        console.setQuantity(3);
+//
+//        service.saveConsole(console);
+//
+//        expectedResult.setModel("BK Portable");
+//        console.setManufacturer("Burger King");
+//        console.setMemory_amount("6000");
+//        console.setProcessor("BK Processor");
+//        console.setPrice(new BigDecimal("999.99"));
+//        console.setQuantity(3);
+//
+//        Console actualResult = service.saveConsole(console);
+//
+//        Assert.assertEquals(expectedResult, console);
+//
+//
+//
+//        Game game1 = new Game();
+//        game1.setTitle("God of War");
+//        game1.setEsrbRating("MA");
+//        game1.setDescription("Father and son adventure.");
+//        game1.setPrice(new BigDecimal("59.99"));
+//        game1.setStudio("Santa Monica");
+//        game1.setQuantity(100);
+//
+//        service.saveGame(game1);
+//
+//        game1.setTitle("Pokemon");
+//        game1.setEsrbRating("E");
+//        game1.setDescription("Roleplaying adventure game.");
+//        game1.setPrice(new BigDecimal("59.99"));
+//        game1.setStudio("Nintendo");
+//        game1.setQuantity(200);
+//
+//        Game actualGame = service.saveGame(game2);
+//
+//        assertEquals(expectedGame, actualGame);
 //    }
 
-//    @Test
-//        public void shouldDeleteConsole() {
-//        // Delete returns void, so no test
-//    }
+    @Test
+    public void shouldDeleteConsole() {
+        // Delete returns void, so no test
+    }
 
     // --------------------------------- Game ---------------------------------
 
@@ -272,33 +360,59 @@ public class ServiceLayerTest {
     }
 
     // --------------------------------- T-Shirt ---------------------------------
-//    private void setUpTShirtRepositoryMock() {
-//        tShirtRepository = mock(TShirtRepository.class);
-//        TShirt tShirt = new TShirt();
-//        tShirt.setGame_id(33);
-//        tShirt.setTitle("God of War");
-//        tShirt.setEsrbRating("MA");
-//        tShirt.setDescription("Father and son adventure.");
-//        tShirt.setPrice(new BigDecimal("59.99"));
-//        tShirt.setStudio("Santa Monica");
-//        tShirt.setQuantity(100);
-//
-//        List tShirtList = new ArrayList();
-//        tShirtList.add(tShirt);
-//
-//        TShirt tShirt2 = new TShirt();
-//        tShirt2.setTitle("God of War");
-//        tShirt2.setEsrbRating("MA");
-//        tShirt2.setDescription("Father and son adventure.");
-//        tShirt2.setPrice(new BigDecimal("59.99"));
-//        tShirt2.setStudio("Santa Monica");
-//        tShirt2.setQuantity(100);
-//
-//        TShirt actualResult = service.saveTShirt(tShirt);
-//
-//        assertEquals(expectedResult, actualResult);
-//    }
 
+    @Test
+    public void shouldFindTShirtsBySize() {
+
+    }
+    @Test
+    public void shouldFindTShirtsByColor() {
+
+    }
+    @Test
+    public void shouldFindAllTShirts() {
+        List<TShirt> fromService = service.findAllTShirts();
+
+        assertEquals(1, fromService.size());
+
+    }
+    @Test
+    public void shouldFindTShirt() {
+
+    }
+    @Test
+    public void shouldSaveTShirt() {
+        // Arrange
+        TShirt tShirt = new TShirt();
+//        tShirt.settShirtId(50);
+        tShirt.setDescription("This shirt has an ID of 2");
+        tShirt.setQuantity(100);
+        tShirt.setColor("Turquoise");
+        tShirt.setSize("Medium");
+        tShirt.setPrice(BigDecimal.valueOf(20.99));
+
+        TShirt expectedOutput = new TShirt();
+        expectedOutput.settShirtId(50);
+        expectedOutput.setDescription("This shirt has an ID of 2");
+        expectedOutput.setQuantity(100);
+        expectedOutput.setColor("Turquoise");
+        expectedOutput.setSize("Medium");
+        expectedOutput.setPrice(BigDecimal.valueOf(20.99));
+
+        // Act
+        TShirt actualOutput = service.saveTShirt(tShirt);
+
+        // Assert
+        assertEquals(expectedOutput, actualOutput);
+
+    }
+    @Test
+    public void shouldUpdateTShirt() {
+
+    }
+    @Test
+    public void shouldRemoveTShirt() {
+    }
 
     // --------------------------------- Invoice ---------------------------------
 
