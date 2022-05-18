@@ -51,7 +51,7 @@ public class ConsoleRepositoryTests {
         console3.setMemory_amount("12");
         console3.setProcessor("Processor Test 3");
         console3.setPrice(new BigDecimal("1299.99"));
-        console3.setQuantity(1900);
+        console3.setQuantity(190);
 
 //        Console console4 = new Console();
 //        console4.setModel("Burger King Console");
