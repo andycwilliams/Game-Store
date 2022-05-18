@@ -1,11 +1,8 @@
 package com.company.GameStore.service;
 
 import com.company.GameStore.controller.ConsoleController;
-import com.company.GameStore.models.Console;
-import com.company.GameStore.models.Game;
-import com.company.GameStore.repository.ConsoleRepository;
-import com.company.GameStore.repository.GameRepository;
-import com.company.GameStore.repository.TShirtRepository;
+import com.company.GameStore.models.*;
+import com.company.GameStore.repository.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +15,8 @@ import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ServiceLayerTest {
 
@@ -27,13 +24,17 @@ public class ServiceLayerTest {
     ConsoleRepository consoleRepository;
     GameRepository gameRepository;
     TShirtRepository tShirtRepository;
+    SalesTaxRateRepository salesTaxRateRepository;
+    ProcessingFeeRepository processingFeeRepository;
 
     @Before
     public void setUp() throws Exception {
         setUpConsoleRepositoryMock();
         setUpGameRepositoryMock();
+        setUpProcessingFeeRepositoryMock();
+        setUpSalesTaxRepositoryMock();
 
-        service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository);
+        service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository, salesTaxRateRepository, processingFeeRepository);
     }
     private void setUpConsoleRepositoryMock() {
         consoleRepository = mock(ConsoleRepository.class);
@@ -87,6 +88,26 @@ public class ServiceLayerTest {
         doReturn(game).when(gameRepository).save(game2);
         doReturn(Optional.of(game)).when(gameRepository).findById(33);
         doReturn(gameList).when(gameRepository).findAll();
+        when(gameRepository.findByStudio("Santa Monica")).thenReturn(gameList);
+        when(gameRepository.findByEsrbRating("MA")).thenReturn(gameList);
+        when(gameRepository.findByTitle("God of War")).thenReturn(gameList);
+    }
+    private void setUpProcessingFeeRepositoryMock() {
+        processingFeeRepository = mock(ProcessingFeeRepository.class);
+        ProcessingFee processingFee = new ProcessingFee();
+        processingFee.setProductType("Games");
+        processingFee.setFee(new BigDecimal("1.49"));
+
+        when(processingFeeRepository.findById("Games")).thenReturn(Optional.of(processingFee));
+    }
+
+    private void setUpSalesTaxRepositoryMock() {
+        salesTaxRateRepository = mock(SalesTaxRateRepository.class);
+        SalesTaxRate salesTaxRate = new SalesTaxRate();
+        salesTaxRate.setState("IL");
+        salesTaxRate.setRate(new BigDecimal(".05"));
+
+        when(salesTaxRateRepository.findById("IL")).thenReturn(Optional.of(salesTaxRate));
     }
 
     // --------------------------------- Console ---------------------------------
@@ -140,6 +161,50 @@ public class ServiceLayerTest {
     // --------------------------------- Game ---------------------------------
 
     @Test
+    public void shouldFindAGame() {
+        Game expectedGame = new Game();
+        expectedGame.setGame_id(33);
+        expectedGame.setTitle("God of War");
+        expectedGame.setEsrbRating("MA");
+        expectedGame.setDescription("Father and son adventure.");
+        expectedGame.setPrice(new BigDecimal("59.99"));
+        expectedGame.setStudio("Santa Monica");
+        expectedGame.setQuantity(100);
+
+        Game actualGame = service.findGame(33);
+
+        assertEquals(expectedGame, actualGame);
+    }
+
+    @Test
+    public void shouldFindAllGames() {
+        List<Game> gameList = service.findAllGames();
+
+        assertEquals(1, gameList.size());
+    }
+
+    @Test
+    public void shouldFindGamesByStudio() {
+        List<Game> gameList = service.findGamesByStudio("Santa Monica");
+
+        assertEquals(1, gameList.size());
+    }
+
+    @Test
+    public void shouldFindGameByEsrb() {
+        List<Game> gameList = service.findGamesByEsrb("MA");
+
+        assertEquals(1, gameList.size());
+    }
+
+    @Test
+    public void shouldFindGamesByTitle() {
+        List<Game> gameList = service.findGamesByTitle("God of War");
+
+        assertEquals(1, gameList.size());
+    }
+
+    @Test
     public void shouldSaveAGame() {
         Game saveGame = new Game();
         saveGame.setTitle("God of War");
@@ -163,6 +228,79 @@ public class ServiceLayerTest {
         assertEquals(expectedSave, actualGame);
     }
 
+    @Test
+    public void shouldUpdateAGame() {
+        Game game1 = new Game();
+        game1.setTitle("God of War");
+        game1.setEsrbRating("MA");
+        game1.setDescription("Father and son adventure.");
+        game1.setPrice(new BigDecimal("59.99"));
+        game1.setStudio("Santa Monica");
+        game1.setQuantity(100);
+
+        service.saveGame(game1);
+
+        game1.setTitle("Pokemon");
+        game1.setEsrbRating("E");
+        game1.setDescription("Roleplaying adventure game.");
+        game1.setPrice(new BigDecimal("59.99"));
+        game1.setStudio("Nintendo");
+        game1.setQuantity(200);
+
+        Game expectedGame = service.saveGame(game1);
+
+        Game game2 = new Game();
+        game2.setTitle("Pokemon");
+        game2.setEsrbRating("E");
+        game2.setDescription("Roleplaying adventure game.");
+        game2.setPrice(new BigDecimal("59.99"));
+        game2.setStudio("Nintendo");
+        game2.setQuantity(200);
+
+        Game actualGame = service.saveGame(game2);
+
+        assertEquals(expectedGame, actualGame);
+    }
+
+    @Test
+    public void shouldRemoveAGame() {
+        // Delete returns void, so no test needed
+    }
+
     // --------------------------------- T-Shirt ---------------------------------
 
+    // --------------------------------- Invoice ---------------------------------
+
+    @Test
+    public void shouldSaveAnInvoice() {
+        Invoice inputInvoice = new Invoice();
+        inputInvoice.setName("George");
+        inputInvoice.setStreet("Belmont");
+        inputInvoice.setCity("Chicago");
+        inputInvoice.setState("IL");
+        inputInvoice.setZipCode("60645");
+        inputInvoice.setItemType("Games");
+        inputInvoice.setItemId(33);
+        inputInvoice.setQuantity(1);
+
+        Invoice expectedInvoice = new Invoice();
+        expectedInvoice.setName("George");
+        expectedInvoice.setStreet("Belmont");
+        expectedInvoice.setCity("Chicago");
+        expectedInvoice.setState("IL");
+        expectedInvoice.setZipCode("60645");
+        expectedInvoice.setItemType("Games");
+        expectedInvoice.setItemId(33);
+        expectedInvoice.setUnitPrice(new BigDecimal("59.99"));
+        expectedInvoice.setQuantity(1);
+        expectedInvoice.setSubtotal(new BigDecimal("59.99"));
+        expectedInvoice.setTax(new BigDecimal(".05"));
+        expectedInvoice.setProcessingFee(new BigDecimal("1.49"));
+        expectedInvoice.setTotal(new BigDecimal("61.53"));
+
+        Invoice actualInvoice = service.saveInvoice(inputInvoice);
+
+        assertEquals(expectedInvoice, actualInvoice);
+
+    }
 }

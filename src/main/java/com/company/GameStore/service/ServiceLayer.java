@@ -32,10 +32,13 @@ public class ServiceLayer {
 
     @Autowired
     public ServiceLayer(ConsoleRepository consoleRepository,GameRepository gameRepository,
-                        TShirtRepository tShirtRepository) {
+                        TShirtRepository tShirtRepository, SalesTaxRateRepository salesTaxRateRepository,
+                        ProcessingFeeRepository processingFeeRepository) {
         this.consoleRepository = consoleRepository;
         this.gameRepository = gameRepository;
         this.tShirtRepository = tShirtRepository;
+        this.salesTaxRateRepository = salesTaxRateRepository;
+        this.processingFeeRepository = processingFeeRepository;
     }
 
     // --------------------------------- Console ---------------------------------
@@ -155,16 +158,16 @@ public class ServiceLayer {
 
         // --------------------------------- Match item type and set processing fee ---------------------------------
 
-        if (invoice.getItemType().equals("Console")) {
+        if (invoice.getItemType().equals("Consoles")) {
             Console console = consoleRepository.getById(invoice.getId());
 
-        } else if (invoice.getItemType().equals("Game")) {
-            Game game = gameRepository.getById(invoice.getItemId());
+        } else if (invoice.getItemType().equals("Games")) {
+            Game game = gameRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(game.getPrice());
 
             // ------------------------------ Inventory management ------------------------------
 
-            if (invoice.getQuantity() < game.getQuantity()) {
+            if (invoice.getQuantity() > game.getQuantity()) {
                 throw new InvalidRequestException(); // Placeholder error until testing
             }
             game.setQuantity(game.getQuantity() - invoice.getQuantity());
@@ -178,7 +181,7 @@ public class ServiceLayer {
                 invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
             }
 
-        } else if (invoice.getItemType().equals("T-Shirt")) {
+        } else if (invoice.getItemType().equals("T-shirts")) {
             TShirt tShirts = tShirtRepository.getById(invoice.getId());
         }
 
@@ -191,7 +194,7 @@ public class ServiceLayer {
         purchase.setState(invoice.getState());
         purchase.setZipCode(invoice.getZipCode());
         purchase.setItemType(invoice.getItemType());
-        purchase.setItemId(purchase.getItemId());
+        purchase.setItemId(invoice.getItemId());
         purchase.setUnitPrice(invoice.getUnitPrice());
         purchase.setQuantity(invoice.getQuantity());
         purchase.setSubtotal(purchase.getUnitPrice().multiply(BigDecimal.valueOf(purchase.getQuantity())));

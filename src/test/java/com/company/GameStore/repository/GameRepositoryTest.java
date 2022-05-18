@@ -80,21 +80,21 @@ public class GameRepositoryTest {
     public void shouldGetAllGamesByEsrbRating() throws Exception {
 
         List<Game> game = gameRepository.findByEsrbRating("E");
-        assertEquals(game.size(), 2);
+        assertEquals(2, game.size());
     }
 
     @Test
     public void shouldGetAllGamesByTitle() throws Exception {
         List<Game> game = gameRepository.findByTitle("God of War");
-        assertEquals(game.size(), 1);
+        assertEquals(1, game.size());
     }
 
-//    @Test
-//    public void getAllGames() throws Exception {
-//
-//        List<Game> gameList = gameRepository.findAll();
-//        assertEquals(gameList.size(), 4);
-//    }
+    @Test
+    public void getAllGames() throws Exception {
+
+        List<Game> gameList = gameRepository.findAll();
+        assertEquals(4, gameList.size());
+    }
 
     @Test
     public void getDeleteGame() {
