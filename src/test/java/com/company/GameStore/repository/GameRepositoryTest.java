@@ -30,10 +30,8 @@ public class GameRepositoryTest {
     @Before
     public void setUp() throws Exception {
         gameRepository.deleteAll();
-    }
-  
-    @Test
-    public void getAllGames() throws Exception {
+
+        game = new Game();
         game.setTitle("God of War");
         game.setEsrbRating("MA");
         game.setDescription("Father and son adventure.");
@@ -75,7 +73,7 @@ public class GameRepositoryTest {
     public void shouldGetAllGamesByStudio() throws Exception {
 
         List<Game> game = gameRepository.findByStudio("Nintendo");
-        assertEquals(game.size(), 2);
+        assertEquals(2, game.size());
     }
 
     @Test
