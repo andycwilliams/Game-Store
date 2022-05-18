@@ -17,7 +17,7 @@ public class TShirt {
     @Id
     @NotNull
     @Column(name = "t_shirt_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int tShirtId;
 
     @NotNull
