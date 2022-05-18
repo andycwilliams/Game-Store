@@ -3,6 +3,7 @@ package com.company.GameStore.service;
 import com.company.GameStore.controller.ConsoleController;
 import com.company.GameStore.models.Console;
 import com.company.GameStore.models.Game;
+import com.company.GameStore.models.TShirt;
 import com.company.GameStore.repository.ConsoleRepository;
 import com.company.GameStore.repository.GameRepository;
 import com.company.GameStore.repository.TShirtRepository;
@@ -32,9 +33,11 @@ public class ServiceLayerTest {
     public void setUp() throws Exception {
         setUpConsoleRepositoryMock();
         setUpGameRepositoryMock();
+//        setUpTShirtRepositoryMock();
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository);
     }
+
     private void setUpConsoleRepositoryMock() {
         consoleRepository = mock(ConsoleRepository.class);
         Console console = new Console();
@@ -164,5 +167,32 @@ public class ServiceLayerTest {
     }
 
     // --------------------------------- T-Shirt ---------------------------------
+//    private void setUpTShirtRepositoryMock() {
+//        tShirtRepository = mock(TShirtRepository.class);
+//        TShirt tShirt = new TShirt();
+//        tShirt.setGame_id(33);
+//        tShirt.setTitle("God of War");
+//        tShirt.setEsrbRating("MA");
+//        tShirt.setDescription("Father and son adventure.");
+//        tShirt.setPrice(new BigDecimal("59.99"));
+//        tShirt.setStudio("Santa Monica");
+//        tShirt.setQuantity(100);
+//
+//        List tShirtList = new ArrayList();
+//        tShirtList.add(tShirt);
+//
+//        TShirt tShirt2 = new TShirt();
+//        tShirt2.setTitle("God of War");
+//        tShirt2.setEsrbRating("MA");
+//        tShirt2.setDescription("Father and son adventure.");
+//        tShirt2.setPrice(new BigDecimal("59.99"));
+//        tShirt2.setStudio("Santa Monica");
+//        tShirt2.setQuantity(100);
+//
+//        TShirt actualResult = service.saveTShirt(tShirt);
+//
+//        assertEquals(expectedResult, actualResult);
+//    }
+
 
 }

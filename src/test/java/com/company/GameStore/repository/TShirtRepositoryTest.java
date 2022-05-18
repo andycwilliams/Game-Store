@@ -60,9 +60,9 @@ public class TShirtRepositoryTest {
         tShirt.setDescription("This shirt is green");
         tShirt.setPrice(BigDecimal.valueOf(15.99));
         tShirt.setQuantity(50);
-        tShirtRepository.save(tShirt);
 
-        tShirt = new TShirt();
+        tShirt = tShirtRepository.save(tShirt);
+
         tShirt.settShirtId(1);
         tShirt.setSize("Medium");
         tShirt.setColor("Red");
@@ -71,9 +71,9 @@ public class TShirtRepositoryTest {
         tShirt.setQuantity(55);
         tShirtRepository.save(tShirt);
 
-        Optional<TShirt> tShirts1 = tShirtRepository.findById((tShirt.gettShirtId()));
+        Optional<TShirt> tShirts1 = tShirtRepository.findById(tShirt.gettShirtId());
         assertEquals(tShirts1.get(), tShirt);
-        
+
     }
     @Test
     public void addAndGetTShirtThenDelete() {

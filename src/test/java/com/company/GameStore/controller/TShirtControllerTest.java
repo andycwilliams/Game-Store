@@ -37,7 +37,6 @@ public class TShirtControllerTest {
     ServiceLayer serviceLayer;
 
     private TShirt inputTShirt;
-    private TShirt outputTShirt;
     private String inputTShirtString;
     private String outputTShirtString;
     private List<TShirt> allTShirts;
@@ -53,7 +52,7 @@ public class TShirtControllerTest {
     @Before
     public void setUp() throws Exception {
         inputTShirt = new TShirt(1, "Medium", "Red", "This shirt is red.", price, 50);
-        outputTShirt = new TShirt(tShirtId, "Medium", "Red", "This shirt is red.", price, 50);
+        TShirt outputTShirt = new TShirt(tShirtId, "Medium", "Red", "This shirt is red.", price, 50);
         inputTShirtString = mapper.writeValueAsString(inputTShirt);
         outputTShirtString = mapper.writeValueAsString(outputTShirt);
         allTShirts = Arrays.asList(outputTShirt);
@@ -62,6 +61,10 @@ public class TShirtControllerTest {
         when(serviceLayer.saveTShirt(inputTShirt)).thenReturn(outputTShirt);
         when(serviceLayer.findAllTShirts()).thenReturn(allTShirts);
         when(serviceLayer.findTShirt(tShirtId)).thenReturn(outputTShirt);
+        when(serviceLayer.findTShirtBySize("Large")).thenReturn(allTShirts);
+        ///////
+        when(serviceLayer.findTShirtByColor("Blue")).thenReturn(allTShirts);
+
     }
 
     @Test
@@ -121,6 +124,24 @@ public class TShirtControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldReturnAllTShirtsBySize() throws Exception {
+        mockMvc.perform(get("/tshirts/size/" + size))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allTShirtsString)
+                );
+    }
+
+    @Test
+    public void shouldReturnAllTShirtsByColor() throws Exception {
+        mockMvc.perform(get("/tshirts/color/" + color))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allTShirtsString)
+                );
     }
 
 //end
