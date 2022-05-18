@@ -34,6 +34,7 @@ public class ServiceLayerTest {
         setUpGameRepositoryMock();
         setUpProcessingFeeRepositoryMock();
         setUpSalesTaxRepositoryMock();
+        setUpTShirtRepositoryMock();
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository, salesTaxRateRepository, processingFeeRepository);
     }
@@ -110,6 +111,32 @@ public class ServiceLayerTest {
         salesTaxRate.setRate(new BigDecimal(".05"));
 
         when(salesTaxRateRepository.findById("IL")).thenReturn(Optional.of(salesTaxRate));
+    }
+
+    private void setUpTShirtRepositoryMock() {
+        tShirtRepository = mock(TShirtRepository.class);
+        TShirt tShirt = new TShirt();
+        tShirt.settShirtId(1);
+        tShirt.setSize("Large");
+        tShirt.setPrice(BigDecimal.valueOf(10.99));
+        tShirt.setQuantity(100);
+        tShirt.setDescription("This shirt is purple");
+        tShirt.setColor("Purple");
+
+        List tShirtList = new ArrayList();
+        tShirtList.add(tShirt);
+
+        TShirt tShirt2 = new TShirt();
+        tShirt2.settShirtId(2);
+        tShirt2.setSize("Large");
+        tShirt2.setPrice(BigDecimal.valueOf(11.99));
+        tShirt2.setQuantity(105);
+        tShirt2.setDescription("This shirt is yellow");
+        tShirt2.setColor("Yellow");
+
+        doReturn(tShirt).when(tShirtRepository).save(tShirt2);
+        doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(4);
+        doReturn(tShirtList).when(tShirtRepository).findAll();
     }
 
     // --------------------------------- Console ---------------------------------
@@ -272,33 +299,59 @@ public class ServiceLayerTest {
     }
 
     // --------------------------------- T-Shirt ---------------------------------
-//    private void setUpTShirtRepositoryMock() {
-//        tShirtRepository = mock(TShirtRepository.class);
-//        TShirt tShirt = new TShirt();
-//        tShirt.setGame_id(33);
-//        tShirt.setTitle("God of War");
-//        tShirt.setEsrbRating("MA");
-//        tShirt.setDescription("Father and son adventure.");
-//        tShirt.setPrice(new BigDecimal("59.99"));
-//        tShirt.setStudio("Santa Monica");
-//        tShirt.setQuantity(100);
-//
-//        List tShirtList = new ArrayList();
-//        tShirtList.add(tShirt);
-//
-//        TShirt tShirt2 = new TShirt();
-//        tShirt2.setTitle("God of War");
-//        tShirt2.setEsrbRating("MA");
-//        tShirt2.setDescription("Father and son adventure.");
-//        tShirt2.setPrice(new BigDecimal("59.99"));
-//        tShirt2.setStudio("Santa Monica");
-//        tShirt2.setQuantity(100);
-//
-//        TShirt actualResult = service.saveTShirt(tShirt);
-//
-//        assertEquals(expectedResult, actualResult);
-//    }
 
+    @Test
+    public void shouldFindTShirtsBySize() {
+
+    }
+    @Test
+    public void shouldFindTShirtsByColor() {
+
+    }
+    @Test
+    public void shouldFindAllTShirts() {
+        List<TShirt> fromService = service.findAllTShirts();
+
+        assertEquals(1, fromService.size());
+
+    }
+    @Test
+    public void shouldFindTShirt() {
+
+    }
+    @Test
+    public void shouldSaveTShirt() {
+        // Arrange
+        TShirt tShirt = new TShirt();
+//        tShirt.settShirtId(50);
+        tShirt.setDescription("This shirt has an ID of 2");
+        tShirt.setQuantity(100);
+        tShirt.setColor("Turquoise");
+        tShirt.setSize("Medium");
+        tShirt.setPrice(BigDecimal.valueOf(20.99));
+
+        TShirt expectedOutput = new TShirt();
+        expectedOutput.settShirtId(50);
+        expectedOutput.setDescription("This shirt has an ID of 2");
+        expectedOutput.setQuantity(100);
+        expectedOutput.setColor("Turquoise");
+        expectedOutput.setSize("Medium");
+        expectedOutput.setPrice(BigDecimal.valueOf(20.99));
+
+        // Act
+        TShirt actualOutput = service.saveTShirt(tShirt);
+
+        // Assert
+        assertEquals(expectedOutput, actualOutput);
+
+    }
+    @Test
+    public void shouldUpdateTShirt() {
+
+    }
+    @Test
+    public void shouldRemoveTShirt() {
+    }
 
     // --------------------------------- Invoice ---------------------------------
 
