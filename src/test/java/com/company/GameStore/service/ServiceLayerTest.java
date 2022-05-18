@@ -4,10 +4,13 @@ import com.company.GameStore.controller.ConsoleController;
 import com.company.GameStore.models.*;
 import com.company.GameStore.repository.*;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -63,6 +66,7 @@ public class ServiceLayerTest {
         doReturn(console).when(consoleRepository).save(console2);
         doReturn(Optional.of(console)).when(consoleRepository).findById(1);
         doReturn(consoleList).when(consoleRepository).findAll();
+//        when(gameRepository.findByManufacturer("Sony")).thenReturn(consoleList);
     }
 
     private void setUpGameRepositoryMock() {
@@ -120,16 +124,30 @@ public class ServiceLayerTest {
         assertEquals(1, fromService.size());
     }
 
-//    @Test
-//        public void shouldFindConsoleById() {
-//    }
+    @Test
+    public void shouldFindConsole() {
+        Console expectedResult = new Console();
+        expectedResult.setConsole_id(1);
+        expectedResult.setModel("Playstation 5");
+        expectedResult.setManufacturer("Sony");
+        expectedResult.setMemory_amount("99");
+        expectedResult.setProcessor("Processor Test");
+        expectedResult.setPrice(new BigDecimal("899.99"));
+        expectedResult.setQuantity(31);
 
-//    @Test
-//    public List<Console> shouldFindConsolesByManufacturer(@PathVariable String manufacturer) {
-//        return consoleRepository.findByManufacturer(manufacturer);
-//    }
+        Console actualResult = service.findConsole(1);
+
+        assertEquals(expectedResult, actualResult);
+    }
 
     @Test
+    public void shouldFindConsolesByManufacturer() throws Exception {
+        List<Console> consoleList = consoleRepository.findByManufacturer("Sony");
+        Assert.assertEquals(2, consoleList.size());
+    }
+
+    @Test
+    @ResponseStatus(HttpStatus.CREATED)
     public void shouldAddConsole() {
         Console console = new Console();
         console.setModel("Playstation 5");
@@ -154,13 +172,56 @@ public class ServiceLayerTest {
     }
 
 //    @Test
-//        public void shouldUpdateConsole() {
+//    public void shouldUpdateConsole() {
+//        Console console = new Console();
+//        console.setModel("Burger King Console");
+//        console.setManufacturer("Burger King");
+//        console.setMemory_amount("6000");
+//        console.setProcessor("BK Processor");
+//        console.setPrice(new BigDecimal("999.99"));
+//        console.setQuantity(3);
+//
+//        service.saveConsole(console);
+//
+//        expectedResult.setModel("BK Portable");
+//        console.setManufacturer("Burger King");
+//        console.setMemory_amount("6000");
+//        console.setProcessor("BK Processor");
+//        console.setPrice(new BigDecimal("999.99"));
+//        console.setQuantity(3);
+//
+//        Console actualResult = service.saveConsole(console);
+//
+//        Assert.assertEquals(expectedResult, console);
+//
+//
+//
+//        Game game1 = new Game();
+//        game1.setTitle("God of War");
+//        game1.setEsrbRating("MA");
+//        game1.setDescription("Father and son adventure.");
+//        game1.setPrice(new BigDecimal("59.99"));
+//        game1.setStudio("Santa Monica");
+//        game1.setQuantity(100);
+//
+//        service.saveGame(game1);
+//
+//        game1.setTitle("Pokemon");
+//        game1.setEsrbRating("E");
+//        game1.setDescription("Roleplaying adventure game.");
+//        game1.setPrice(new BigDecimal("59.99"));
+//        game1.setStudio("Nintendo");
+//        game1.setQuantity(200);
+//
+//        Game actualGame = service.saveGame(game2);
+//
+//        assertEquals(expectedGame, actualGame);
 //    }
 
-//    @Test
-//        public void shouldDeleteConsole() {
-//        // Delete returns void, so no test
-//    }
+    @Test
+    public void shouldDeleteConsole() {
+        // Delete returns void, so no test
+    }
 
     // --------------------------------- Game ---------------------------------
 
