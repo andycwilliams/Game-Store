@@ -16,7 +16,6 @@ import java.util.Objects;
 public class ProcessingFee {
 
     @Id
-  
     @NotNull
     @Size(max = 20, message = "Product type cannot be over 20 characters.")
     private String productType;

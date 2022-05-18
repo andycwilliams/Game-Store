@@ -87,12 +87,6 @@ public class InvoiceControllerTest {
 
     @Test
     public void shouldCreateAnInvoice() throws Exception {
-//        outputInvoice.setQuantity(2);
-//        outputInvoiceString = mapper.writeValueAsString(outputInvoice);
-//
-//        Invoice testInvoice = new Invoice();
-//        String testInvoiceString = mapper.writeValueAsString(testInvoice);
-
 
         mockMvc.perform(post("/invoice")
                 .content(inputInvoiceString)
