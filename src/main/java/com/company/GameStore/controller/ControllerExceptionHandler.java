@@ -3,6 +3,7 @@ package com.company.GameStore.controller;
 import com.company.GameStore.exception.InvalidRequestException;
 import com.company.GameStore.exception.NoConsoleFoundException;
 import com.company.GameStore.exception.NoGameFoundException;
+import com.company.GameStore.exception.NoTShirtFoundException;
 import com.company.GameStore.models.CustomErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,13 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(value = NoConsoleFoundException.class)
     public ResponseEntity<CustomErrorResponse> handleNoConsoleFound(NoConsoleFoundException e) {
+        CustomErrorResponse error = new CustomErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+        ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return responseEntity;
+    }
+
+    @ExceptionHandler(value = NoTShirtFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleNoTShirtFound(NoTShirtFoundException e) {
         CustomErrorResponse error = new CustomErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
         ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         return responseEntity;
