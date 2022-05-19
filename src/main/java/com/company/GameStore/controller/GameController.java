@@ -53,7 +53,7 @@ public class GameController {
     public void updateGame(@PathVariable int id, @RequestBody Game game) {
 
         if (game.getGame_id() == 0) {
-            game.setGame_id(id);
+            game.getGame_id();
         }
         if (game.getGame_id() != id) {
             throw new InvalidRequestException("The given id does not match any id within the database.");

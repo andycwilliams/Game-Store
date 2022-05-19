@@ -56,7 +56,7 @@ public class TShirtController {
     public void updateTShirt(@PathVariable int id, @RequestBody TShirt tShirt) {
 
         if (tShirt.gettShirtId() == 0) {
-            tShirt.settShirtId(id);
+            tShirt.gettShirtId();
         }
         if (tShirt.gettShirtId() != id) {
             throw new InvalidRequestException("The given id does not match any id within the database.");
