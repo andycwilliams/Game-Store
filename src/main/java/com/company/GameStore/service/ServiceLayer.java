@@ -175,7 +175,7 @@ public class ServiceLayer {
             game.setQuantity(game.getQuantity() - invoice.getQuantity());
             gameRepository.save(game);
 
-        } else if (invoice.getItemType().equals("T-shirts")) {
+        } else if (invoice.getItemType().equals("T-Shirts")) {
             TShirt tShirts = tShirtRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(tShirts.getPrice());
 
