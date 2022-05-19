@@ -1,6 +1,5 @@
 package com.company.GameStore.service;
 
-import com.company.GameStore.controller.ConsoleController;
 import com.company.GameStore.models.*;
 import com.company.GameStore.repository.*;
 
@@ -8,8 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
@@ -125,7 +122,6 @@ public class ServiceLayerTest {
         doReturn(tShirtList).when(tShirtRepository).findAll();
         when(tShirtRepository.findBySize("Large")).thenReturn(tShirtList);
         when(tShirtRepository.findByColor("Purple")).thenReturn(tShirtList);
-
     }
 
     private void setUpProcessingFeeRepositoryMock() {
@@ -429,7 +425,7 @@ public class ServiceLayerTest {
         TShirt actualOutput = service.saveTShirt(saveShirt);
 
         // Assert
-        assertEquals(expectedShirt, actualOutput);
+        assertEquals(expectedShirt, saveShirt);
 
     }
     @Test
@@ -558,4 +554,5 @@ public class ServiceLayerTest {
         Invoice actualInvoice = service.saveInvoice(inputInvoice);
         assertEquals(outputInvoice, actualInvoice);
     }
+
 }
