@@ -130,7 +130,7 @@ public class ServiceLayer {
         return tShirt.isPresent() ? tShirt.get() : null;
     }
 
-    public TShirt saveTShirt(@RequestBody TShirt tShirt) {
+    public TShirt saveTShirt(TShirt tShirt) {
         return tShirtRepository.save(tShirt);
     }
 
@@ -150,36 +150,48 @@ public class ServiceLayer {
         // --------------------------------- Initial business rule check ---------------------------------
 
         if (invoice.getQuantity() <= 0) {
-            throw new InvalidRequestException(); // Placeholder error until testing
+            throw new InvalidRequestException("You cannot place an order without specifying a quantity.");
         }
 
-        // --------------------------------- Match item type and set processing fee ---------------------------------
+        // --------------------------------- Match item type, set price, and update quantity  ---------------------------------
 
         if (invoice.getItemType().equals("Consoles")) {
-            Console console = consoleRepository.getById(invoice.getId());
+            Console console = consoleRepository.findById(invoice.getItemId()).get();
+            invoice.setUnitPrice(console.getPrice());
+
+            if (invoice.getQuantity() > console.getQuantity()) {
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
+            }
+            console.setQuantity(console.getQuantity() - invoice.getQuantity());
+            consoleRepository.save(console);
 
         } else if (invoice.getItemType().equals("Games")) {
             Game game = gameRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(game.getPrice());
 
-            // ------------------------------ Inventory management ------------------------------
-
             if (invoice.getQuantity() > game.getQuantity()) {
-                throw new InvalidRequestException(); // Placeholder error until testing
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
             }
             game.setQuantity(game.getQuantity() - invoice.getQuantity());
             gameRepository.save(game);
 
-            // ------------------------------ Processing fee management ------------------------------
+        } else if (invoice.getItemType().equals("T-Shirts")) {
+            TShirt tShirts = tShirtRepository.findById(invoice.getItemId()).get();
+            invoice.setUnitPrice(tShirts.getPrice());
 
-            if (invoice.getQuantity() > 10) {
-                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee().add(new BigDecimal("15.49")));
-            } else {
-                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
+            if (invoice.getQuantity() > tShirts.getQuantity()) {
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
             }
+            tShirts.setQuantity(tShirts.getQuantity() - invoice.getQuantity());
+            tShirtRepository.save(tShirts);
+        }
 
-        } else if (invoice.getItemType().equals("T-shirts")) {
-            TShirt tShirts = tShirtRepository.getById(invoice.getId());
+        // ------------------------------ Processing fee management ------------------------------
+
+        if (invoice.getQuantity() > 10) {
+            invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee().add(new BigDecimal("15.49")));
+        } else {
+            invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
         }
 
         // --------------------------------- Set invoice ---------------------------------
