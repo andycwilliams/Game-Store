@@ -4,7 +4,7 @@ info:
   version: v0
 servers:
   - url: http://localhost:8080
-    description: Generated server url
+    description: Game store api that manages inventory and provides a means of purchasing products
 paths:
   /tshirts/{id}:
     get:
