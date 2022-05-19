@@ -35,9 +35,9 @@ public class ServiceLayerTest {
     public void setUp() throws Exception {
         setUpConsoleRepositoryMock();
         setUpGameRepositoryMock();
+        setUpTShirtRepositoryMock();
         setUpProcessingFeeRepositoryMock();
         setUpSalesTaxRepositoryMock();
-        setUpTShirtRepositoryMock();
 
         service = new ServiceLayer(consoleRepository, gameRepository, tShirtRepository, salesTaxRateRepository, processingFeeRepository);
     }
@@ -67,7 +67,7 @@ public class ServiceLayerTest {
         doReturn(console).when(consoleRepository).save(console2);
         doReturn(Optional.of(console)).when(consoleRepository).findById(1);
         doReturn(consoleList).when(consoleRepository).findAll();
-//        when(gameRepository.findByManufacturer("Sony")).thenReturn(consoleList);
+        when(consoleRepository.findByManufacturer("Sony")).thenReturn(consoleList);
     }
 
     private void setUpGameRepositoryMock() {
@@ -99,29 +99,13 @@ public class ServiceLayerTest {
         when(gameRepository.findByEsrbRating("MA")).thenReturn(gameList);
         when(gameRepository.findByTitle("God of War")).thenReturn(gameList);
     }
-    private void setUpProcessingFeeRepositoryMock() {
-        processingFeeRepository = mock(ProcessingFeeRepository.class);
-        ProcessingFee processingFee = new ProcessingFee();
-        processingFee.setProductType("Games");
-        processingFee.setFee(new BigDecimal("1.49"));
-
-        when(processingFeeRepository.findById("Games")).thenReturn(Optional.of(processingFee));
-    }
-
-    private void setUpSalesTaxRepositoryMock() {
-        salesTaxRateRepository = mock(SalesTaxRateRepository.class);
-        SalesTaxRate salesTaxRate = new SalesTaxRate();
-        salesTaxRate.setState("IL");
-        salesTaxRate.setRate(new BigDecimal(".05"));
-
-        when(salesTaxRateRepository.findById("IL")).thenReturn(Optional.of(salesTaxRate));
-    }
 
     private void setUpTShirtRepositoryMock() {
         tShirtRepository = mock(TShirtRepository.class);
         TShirt tShirt = new TShirt();
         tShirt.settShirtId(1);
         tShirt.setSize("Large");
+//        tShirt.setPrice(BigDecimal.valueOf(10.99));
         tShirt.setPrice(BigDecimal.valueOf(10.99));
         tShirt.setQuantity(100);
         tShirt.setDescription("This shirt is purple");
@@ -131,16 +115,59 @@ public class ServiceLayerTest {
         tShirtList.add(tShirt);
 
         TShirt tShirt2 = new TShirt();
-        tShirt2.settShirtId(2);
+//        tShirt2.settShirtId(2);
+//        tShirt2.setSize("Large");
+//        tShirt2.setPrice(BigDecimal.valueOf(11.99));
+//        tShirt2.setQuantity(105);
+//        tShirt2.setDescription("This shirt is yellow");
+//        tShirt2.setColor("Yellow");
         tShirt2.setSize("Large");
-        tShirt2.setPrice(BigDecimal.valueOf(11.99));
-        tShirt2.setQuantity(105);
-        tShirt2.setDescription("This shirt is yellow");
-        tShirt2.setColor("Yellow");
+        tShirt2.setPrice(BigDecimal.valueOf(10.99));
+        tShirt2.setQuantity(100);
+        tShirt2.setDescription("This shirt is purple");
+        tShirt2.setColor("Purple");
 
         doReturn(tShirt).when(tShirtRepository).save(tShirt2);
-        doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(4);
+        doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(1);
         doReturn(tShirtList).when(tShirtRepository).findAll();
+    }
+
+    private void setUpProcessingFeeRepositoryMock() {
+        processingFeeRepository = mock(ProcessingFeeRepository.class);
+        ProcessingFee consoleProcessingFee = new ProcessingFee();
+        consoleProcessingFee.setProductType("Consoles");
+        consoleProcessingFee.setFee(new BigDecimal("14.99"));
+
+        ProcessingFee gameProcessingFee = new ProcessingFee();
+        gameProcessingFee.setProductType("Games");
+        gameProcessingFee.setFee(new BigDecimal("1.49"));
+
+        ProcessingFee tShirtProcessingFee = new ProcessingFee();
+        tShirtProcessingFee.setProductType("T-Shirts");
+        tShirtProcessingFee.setFee(new BigDecimal("1.98"));
+
+        when(processingFeeRepository.findById("Consoles")).thenReturn(Optional.of(consoleProcessingFee));
+        when(processingFeeRepository.findById("Games")).thenReturn(Optional.of(gameProcessingFee));
+        when(processingFeeRepository.findById("T-Shirts")).thenReturn(Optional.of(tShirtProcessingFee));
+    }
+
+    private void setUpSalesTaxRepositoryMock() {
+        salesTaxRateRepository = mock(SalesTaxRateRepository.class);
+        SalesTaxRate salesTaxRateNy = new SalesTaxRate();
+        salesTaxRateNy.setState("NY");
+        salesTaxRateNy.setRate(new BigDecimal(".06"));
+
+        SalesTaxRate salesTaxRateIl = new SalesTaxRate();
+        salesTaxRateIl.setState("IL");
+        salesTaxRateIl.setRate(new BigDecimal(".05"));
+
+        SalesTaxRate salesTaxRateTx = new SalesTaxRate();
+        salesTaxRateTx.setState("TX");
+        salesTaxRateTx.setRate(new BigDecimal(".03"));
+
+        when(salesTaxRateRepository.findById("NY")).thenReturn(Optional.of(salesTaxRateNy));
+        when(salesTaxRateRepository.findById("IL")).thenReturn(Optional.of(salesTaxRateIl));
+        when(salesTaxRateRepository.findById("TX")).thenReturn(Optional.of(salesTaxRateTx));
     }
 
     // --------------------------------- Console ---------------------------------
@@ -170,7 +197,7 @@ public class ServiceLayerTest {
     @Test
     public void shouldFindConsolesByManufacturer() throws Exception {
         List<Console> consoleList = consoleRepository.findByManufacturer("Sony");
-        Assert.assertEquals(2, consoleList.size());
+        Assert.assertEquals(1, consoleList.size());
     }
 
     @Test
@@ -383,27 +410,42 @@ public class ServiceLayerTest {
     @Test
     public void shouldSaveTShirt() {
         // Arrange
-        TShirt tShirt = new TShirt();
+//        TShirt tShirt = new TShirt();
 //        tShirt.settShirtId(50);
-        tShirt.setDescription("This shirt has an ID of 2");
-        tShirt.setQuantity(100);
-        tShirt.setColor("Turquoise");
-        tShirt.setSize("Medium");
-        tShirt.setPrice(BigDecimal.valueOf(20.99));
+//        tShirt.setDescription("This shirt has an ID of 2");
+//        tShirt.setQuantity(100);
+//        tShirt.setColor("Turquoise");
+//        tShirt.setSize("Medium");
+//        tShirt.setPrice(BigDecimal.valueOf(20.99));
+//
+//        TShirt expectedOutput = new TShirt();
+//        expectedOutput.settShirtId(50);
+//        expectedOutput.setDescription("This shirt has an ID of 2");
+//        expectedOutput.setQuantity(100);
+//        expectedOutput.setColor("Turquoise");
+//        expectedOutput.setSize("Medium");
+//        expectedOutput.setPrice(BigDecimal.valueOf(20.99));
 
-        TShirt expectedOutput = new TShirt();
-        expectedOutput.settShirtId(50);
-        expectedOutput.setDescription("This shirt has an ID of 2");
-        expectedOutput.setQuantity(100);
-        expectedOutput.setColor("Turquoise");
-        expectedOutput.setSize("Medium");
-        expectedOutput.setPrice(BigDecimal.valueOf(20.99));
+        TShirt saveShirt = new TShirt();
+        saveShirt.setSize("Large");
+        saveShirt.setPrice(BigDecimal.valueOf(10.99));
+        saveShirt.setQuantity(100);
+        saveShirt.setDescription("This shirt is purple");
+        saveShirt.setColor("Purple");
+
+        TShirt expectedShirt = new TShirt();
+        expectedShirt.settShirtId(1);
+        expectedShirt.setSize("Large");
+        expectedShirt.setPrice(BigDecimal.valueOf(10.99));
+        expectedShirt.setQuantity(100);
+        expectedShirt.setDescription("This shirt is purple");
+        expectedShirt.setColor("Purple");
 
         // Act
-        TShirt actualOutput = service.saveTShirt(tShirt);
+        TShirt actualOutput = service.saveTShirt(saveShirt);
 
         // Assert
-        assertEquals(expectedOutput, actualOutput);
+        assertEquals(expectedShirt, actualOutput);
 
     }
     @Test
@@ -417,7 +459,38 @@ public class ServiceLayerTest {
     // --------------------------------- Invoice ---------------------------------
 
     @Test
-    public void shouldSaveAnInvoice() {
+    public void shouldSaveAConsoleInvoice() {
+        Invoice inputInvoice = new Invoice();
+        inputInvoice.setName("Henry");
+        inputInvoice.setStreet("Cross");
+        inputInvoice.setCity("New York");
+        inputInvoice.setState("NY");
+        inputInvoice.setZipCode("40678");
+        inputInvoice.setItemType("Consoles");
+        inputInvoice.setItemId(1);
+        inputInvoice.setQuantity(1);
+
+        Invoice outputInvoice = new Invoice();
+        outputInvoice.setName("Henry");
+        outputInvoice.setStreet("Cross");
+        outputInvoice.setCity("New York");
+        outputInvoice.setState("NY");
+        outputInvoice.setZipCode("40678");
+        outputInvoice.setItemType("Consoles");
+        outputInvoice.setItemId(1);
+        outputInvoice.setUnitPrice(new BigDecimal("899.99"));
+        outputInvoice.setQuantity(1);
+        outputInvoice.setSubtotal(new BigDecimal("899.99"));
+        outputInvoice.setTax(new BigDecimal(".06"));
+        outputInvoice.setProcessingFee(new BigDecimal("14.99"));
+        outputInvoice.setTotal(new BigDecimal("915.04"));
+
+        Invoice actualInvoice = service.saveInvoice(inputInvoice);
+        assertEquals(outputInvoice, actualInvoice);
+    }
+
+    @Test
+    public void shouldSaveAGameInvoice() {
         Invoice inputInvoice = new Invoice();
         inputInvoice.setName("George");
         inputInvoice.setStreet("Belmont");
@@ -426,7 +499,7 @@ public class ServiceLayerTest {
         inputInvoice.setZipCode("60645");
         inputInvoice.setItemType("Games");
         inputInvoice.setItemId(33);
-        inputInvoice.setQuantity(1);
+        inputInvoice.setQuantity(2);
 
         Invoice expectedInvoice = new Invoice();
         expectedInvoice.setName("George");
@@ -437,15 +510,44 @@ public class ServiceLayerTest {
         expectedInvoice.setItemType("Games");
         expectedInvoice.setItemId(33);
         expectedInvoice.setUnitPrice(new BigDecimal("59.99"));
-        expectedInvoice.setQuantity(1);
-        expectedInvoice.setSubtotal(new BigDecimal("59.99"));
+        expectedInvoice.setQuantity(2);
+        expectedInvoice.setSubtotal(new BigDecimal("119.98"));
         expectedInvoice.setTax(new BigDecimal(".05"));
         expectedInvoice.setProcessingFee(new BigDecimal("1.49"));
-        expectedInvoice.setTotal(new BigDecimal("61.53"));
+        expectedInvoice.setTotal(new BigDecimal("121.52"));
 
         Invoice actualInvoice = service.saveInvoice(inputInvoice);
-
         assertEquals(expectedInvoice, actualInvoice);
+    }
 
+    @Test
+    public void shouldSaveATshirtInvoice() {
+        Invoice inputInvoice = new Invoice();
+        inputInvoice.setName("George");
+        inputInvoice.setStreet("Belmont");
+        inputInvoice.setCity("Houston");
+        inputInvoice.setState("TX");
+        inputInvoice.setZipCode("85940");
+        inputInvoice.setItemType("T-Shirts");
+        inputInvoice.setItemId(1);
+        inputInvoice.setQuantity(3);
+
+        Invoice outputInvoice = new Invoice();
+        outputInvoice.setName("George");
+        outputInvoice.setStreet("Belmont");
+        outputInvoice.setCity("Houston");
+        outputInvoice.setState("TX");
+        outputInvoice.setZipCode("85940");
+        outputInvoice.setItemType("T-Shirts");
+        outputInvoice.setItemId(1);
+        outputInvoice.setUnitPrice(new BigDecimal("10.99"));
+        outputInvoice.setQuantity(3);
+        outputInvoice.setSubtotal(new BigDecimal("32.97"));
+        outputInvoice.setTax(new BigDecimal(".03"));
+        outputInvoice.setProcessingFee(new BigDecimal("1.98"));
+        outputInvoice.setTotal(new BigDecimal("34.98"));
+
+        Invoice actualInvoice = service.saveInvoice(inputInvoice);
+        assertEquals(outputInvoice, actualInvoice);
     }
 }

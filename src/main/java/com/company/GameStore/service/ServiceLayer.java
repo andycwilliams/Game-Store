@@ -153,16 +153,21 @@ public class ServiceLayer {
             throw new InvalidRequestException(); // Placeholder error until testing
         }
 
-        // --------------------------------- Match item type and set processing fee ---------------------------------
+        // --------------------------------- Match item type ---------------------------------
 
         if (invoice.getItemType().equals("Consoles")) {
-            Console console = consoleRepository.getById(invoice.getId());
+            Console console = consoleRepository.findById(invoice.getItemId()).get();
+            invoice.setUnitPrice(console.getPrice());
+
+            if (invoice.getQuantity() > console.getQuantity()) {
+                throw new InvalidRequestException();
+            }
+            console.setQuantity(console.getQuantity() - invoice.getQuantity());
+            consoleRepository.save(console);
 
         } else if (invoice.getItemType().equals("Games")) {
             Game game = gameRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(game.getPrice());
-
-            // ------------------------------ Inventory management ------------------------------
 
             if (invoice.getQuantity() > game.getQuantity()) {
                 throw new InvalidRequestException(); // Placeholder error until testing
@@ -170,16 +175,23 @@ public class ServiceLayer {
             game.setQuantity(game.getQuantity() - invoice.getQuantity());
             gameRepository.save(game);
 
-            // ------------------------------ Processing fee management ------------------------------
-
-            if (invoice.getQuantity() > 10) {
-                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee().add(new BigDecimal("15.49")));
-            } else {
-                invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
-            }
-
         } else if (invoice.getItemType().equals("T-shirts")) {
-            TShirt tShirts = tShirtRepository.getById(invoice.getId());
+            TShirt tShirts = tShirtRepository.findById(invoice.getItemId()).get();
+            invoice.setUnitPrice(tShirts.getPrice());
+
+            if (invoice.getQuantity() > tShirts.getQuantity()) {
+                throw new InvalidRequestException();
+            }
+            tShirts.setQuantity(tShirts.getQuantity() - invoice.getQuantity());
+            tShirtRepository.save(tShirts);
+        }
+
+        // ------------------------------ Processing fee management ------------------------------
+
+        if (invoice.getQuantity() > 10) {
+            invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee().add(new BigDecimal("15.49")));
+        } else {
+            invoice.setProcessingFee(processingFeeRepository.findById(invoice.getItemType()).get().getFee());
         }
 
         // --------------------------------- Set invoice ---------------------------------
