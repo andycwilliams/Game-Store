@@ -66,7 +66,7 @@ public class ServiceLayerTest {
         doReturn(console).when(consoleRepository).save(console2);
         doReturn(Optional.of(console)).when(consoleRepository).findById(1);
         doReturn(consoleList).when(consoleRepository).findAll();
-//        when(gameRepository.findByManufacturer("Sony")).thenReturn(consoleList);
+        when(consoleRepository.findByManufacturer("Sony")).thenReturn(consoleList);
     }
 
     private void setUpGameRepositoryMock() {
@@ -142,8 +142,8 @@ public class ServiceLayerTest {
 
     @Test
     public void shouldFindConsolesByManufacturer() throws Exception {
-        List<Console> consoleList = consoleRepository.findByManufacturer("Sony");
-        Assert.assertEquals(2, consoleList.size());
+        List<Console> consoleList = service.findConsolesByManufacturer("Sony");
+        assertEquals(1, consoleList.size());
     }
 
     @Test
@@ -171,52 +171,40 @@ public class ServiceLayerTest {
         assertEquals(expectedResult, actualResult);
     }
 
-//    @Test
-//    public void shouldUpdateConsole() {
-//        Console console = new Console();
-//        console.setModel("Burger King Console");
-//        console.setManufacturer("Burger King");
-//        console.setMemory_amount("6000");
-//        console.setProcessor("BK Processor");
-//        console.setPrice(new BigDecimal("999.99"));
-//        console.setQuantity(3);
-//
-//        service.saveConsole(console);
-//
-//        expectedResult.setModel("BK Portable");
-//        console.setManufacturer("Burger King");
-//        console.setMemory_amount("6000");
-//        console.setProcessor("BK Processor");
-//        console.setPrice(new BigDecimal("999.99"));
-//        console.setQuantity(3);
-//
-//        Console actualResult = service.saveConsole(console);
-//
-//        Assert.assertEquals(expectedResult, console);
-//
-//
-//
-//        Game game1 = new Game();
-//        game1.setTitle("God of War");
-//        game1.setEsrbRating("MA");
-//        game1.setDescription("Father and son adventure.");
-//        game1.setPrice(new BigDecimal("59.99"));
-//        game1.setStudio("Santa Monica");
-//        game1.setQuantity(100);
-//
-//        service.saveGame(game1);
-//
-//        game1.setTitle("Pokemon");
-//        game1.setEsrbRating("E");
-//        game1.setDescription("Roleplaying adventure game.");
-//        game1.setPrice(new BigDecimal("59.99"));
-//        game1.setStudio("Nintendo");
-//        game1.setQuantity(200);
-//
-//        Game actualGame = service.saveGame(game2);
-//
-//        assertEquals(expectedGame, actualGame);
-//    }
+    @Test
+    public void shouldUpdateConsole() {
+        Console console = new Console();
+        console.setModel("Playstation 5");
+        console.setManufacturer("Sony");
+        console.setMemory_amount("99");
+        console.setProcessor("Processor Test");
+        console.setPrice(new BigDecimal("899.99"));
+        console.setQuantity(31);
+
+        service.updateConsole(console);
+
+        console.setModel("X Box");
+        console.setManufacturer("Microsoft");
+        console.setMemory_amount("77");
+        console.setProcessor("Processor Test 2");
+        console.setPrice(new BigDecimal("599.99"));
+        console.setQuantity(15);
+
+        Console expectedResult = service.addConsole(console);
+
+        Console console2 = new Console();
+        console2 = new Console();
+        console2.setModel("Wii");
+        console2.setManufacturer("Nintendo");
+        console2.setMemory_amount("12");
+        console2.setProcessor("Processor Test 3");
+        console2.setPrice(new BigDecimal("299.99"));
+        console2.setQuantity(190);
+
+        Console actualResult = service.addConsole(console);
+
+        Assert.assertEquals(expectedResult, actualResult);
+    }
 
     @Test
     public void shouldDeleteConsole() {
