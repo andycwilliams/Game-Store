@@ -120,8 +120,8 @@ public class ServiceLayerTest {
         doReturn(tShirt).when(tShirtRepository).save(tShirt2);
         doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(1);
         doReturn(tShirtList).when(tShirtRepository).findAll();
-        doReturn(tShirtList).when(tShirtRepository).findByColor("Purple");
-        doReturn(tShirtList).when(tShirtRepository).findBySize("Large");
+        when(tShirtRepository.findBySize("Large")).thenReturn(tShirtList);
+        when(tShirtRepository.findByColor("Purple")).thenReturn(tShirtList);
     }
 
     private void setUpProcessingFeeRepositoryMock() {
@@ -408,18 +408,18 @@ public class ServiceLayerTest {
         TShirt saveShirt = new TShirt();
         saveShirt.settShirtId(1);
         saveShirt.setSize("Large");
+        saveShirt.setColor("Purple");
+        saveShirt.setDescription("This shirt is purple");
         saveShirt.setPrice(BigDecimal.valueOf(10.99));
         saveShirt.setQuantity(100);
-        saveShirt.setDescription("This shirt is purple");
-        saveShirt.setColor("Purple");
 
         TShirt expectedShirt = new TShirt();
         expectedShirt.settShirtId(1);
         expectedShirt.setSize("Large");
+        expectedShirt.setColor("Purple");
+        expectedShirt.setDescription("This shirt is purple");
         expectedShirt.setPrice(BigDecimal.valueOf(10.99));
         expectedShirt.setQuantity(100);
-        expectedShirt.setDescription("This shirt is purple");
-        expectedShirt.setColor("Purple");
 
         // Act
         TShirt actualOutput = service.saveTShirt(saveShirt);

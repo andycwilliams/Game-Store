@@ -60,11 +60,20 @@ public class ConsoleControllerTest {
         when(serviceLayer.addConsole(consoleInput)).thenReturn(consoleOutput);
         when(serviceLayer.findAllConsoles()).thenReturn(allConsoles);
         when(serviceLayer.findConsole(consoleId)).thenReturn(consoleOutput);
+        when(serviceLayer.findConsolesByManufacturer("Sony")).thenReturn(allConsoles);
     }
 
     @Test
     public void shouldGetAllConsoles() throws Exception {
         mockMvc.perform(get("/console/"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allConsolesString));
+    }
+
+    @Test
+    public void shouldGetAllConsolesByManufacturer() throws Exception {
+        mockMvc.perform(get("/console" + "?manufacturer=Sony"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(allConsolesString));
