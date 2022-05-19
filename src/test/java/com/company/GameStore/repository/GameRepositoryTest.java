@@ -70,8 +70,28 @@ public class GameRepositoryTest {
     }
 
     @Test
-    public void shouldGetAllGamesByStudio() throws Exception {
+    public void shouldGetOneGame() {
+        Game expectedGame = new Game();
+        expectedGame.setTitle("God of War");
+        expectedGame.setEsrbRating("MA");
+        expectedGame.setDescription("Father and son adventure.");
+        expectedGame.setPrice(new BigDecimal("59.99"));
+        expectedGame.setStudio("Santa Monica");
+        expectedGame.setQuantity(100);
+        expectedGame= gameRepository.save(expectedGame);
 
+        Optional<Game> actualGame = gameRepository.findById(expectedGame.getGame_id());
+        assertEquals(expectedGame, actualGame.get());
+    }
+
+    @Test
+    public void shouldGetAllGames() throws Exception {
+        List<Game> gameList = gameRepository.findAll();
+        assertEquals(4, gameList.size());
+    }
+
+    @Test
+    public void shouldGetAllGamesByStudio() throws Exception {
         List<Game> game = gameRepository.findByStudio("Nintendo");
         assertEquals(2, game.size());
     }
@@ -90,28 +110,23 @@ public class GameRepositoryTest {
     }
 
     @Test
-    public void getAllGames() throws Exception {
+    public void shouldCreateGame() {
+        Game newGame = new Game();
+        newGame.setTitle("Spyro");
+        newGame.setEsrbRating("E");
+        newGame.setDescription("Adventure Game");
+        newGame.setPrice(new BigDecimal("39.99"));
+        newGame.setStudio("Activision");
+        newGame.setQuantity(20);
+        gameRepository.save(newGame);
 
-        List<Game> gameList = gameRepository.findAll();
-        assertEquals(4, gameList.size());
+        Optional<Game> checkNewGame = gameRepository.findById(newGame.getGame_id());
+        assertEquals(true, checkNewGame.isPresent());
+
     }
 
     @Test
-    public void getDeleteGame() {
-
-        Optional<Game> game1 = gameRepository.findById(game.getGame_id());
-
-        assertEquals(game1.get(), game);
-
-        gameRepository.deleteById(game.getGame_id());
-
-        game1 = gameRepository.findById(game.getGame_id());
-
-        assertFalse(game1.isPresent());
-    }
-
-    @Test
-    public void updateGame() {
+    public void shouldUpdateGame() {
         Game game = new Game();
         game.setTitle("God of War");
         game.setEsrbRating("MA");
@@ -133,5 +148,19 @@ public class GameRepositoryTest {
 
         Optional<Game> game1 = gameRepository.findById(game.getGame_id());
         assertEquals(game1.get(), game);
+    }
+
+    @Test
+    public void shouldDeleteGame() {
+
+        Optional<Game> game1 = gameRepository.findById(game.getGame_id());
+
+        assertEquals(game1.get(), game);
+
+        gameRepository.deleteById(game.getGame_id());
+
+        game1 = gameRepository.findById(game.getGame_id());
+
+        assertFalse(game1.isPresent());
     }
 }

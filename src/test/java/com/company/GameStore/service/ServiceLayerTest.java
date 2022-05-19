@@ -106,20 +106,20 @@ public class ServiceLayerTest {
         tShirt.settShirtId(1);
         tShirt.setSize("Large");
 //        tShirt.setPrice(BigDecimal.valueOf(10.99));
+        tShirt.setColor("Purple");
+        tShirt.setDescription("This shirt is purple");
         tShirt.setPrice(BigDecimal.valueOf(10.99));
         tShirt.setQuantity(100);
-        tShirt.setDescription("This shirt is purple");
-        tShirt.setColor("Purple");
 
         List tShirtList = new ArrayList();
         tShirtList.add(tShirt);
 
         TShirt tShirt2 = new TShirt();
         tShirt2.setSize("Large");
-        tShirt2.setPrice(BigDecimal.valueOf(10.99));
-        tShirt2.setQuantity(100);
-        tShirt2.setDescription("This shirt is purple");
-        tShirt2.setColor("Purple");
+        tShirt.setColor("Purple");
+        tShirt.setDescription("This shirt is purple");
+        tShirt.setPrice(BigDecimal.valueOf(10.99));
+        tShirt.setQuantity(100);
 
         doReturn(tShirt).when(tShirtRepository).save(tShirt2);
         doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(1);

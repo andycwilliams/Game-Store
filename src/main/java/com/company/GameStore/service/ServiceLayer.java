@@ -150,17 +150,17 @@ public class ServiceLayer {
         // --------------------------------- Initial business rule check ---------------------------------
 
         if (invoice.getQuantity() <= 0) {
-            throw new InvalidRequestException(); // Placeholder error until testing
+            throw new InvalidRequestException("You cannot place an order without specifying a quantity.");
         }
 
-        // --------------------------------- Match item type ---------------------------------
+        // --------------------------------- Match item type, set price, and update quantity  ---------------------------------
 
         if (invoice.getItemType().equals("Consoles")) {
             Console console = consoleRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(console.getPrice());
 
             if (invoice.getQuantity() > console.getQuantity()) {
-                throw new InvalidRequestException();
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
             }
             console.setQuantity(console.getQuantity() - invoice.getQuantity());
             consoleRepository.save(console);
@@ -170,17 +170,17 @@ public class ServiceLayer {
             invoice.setUnitPrice(game.getPrice());
 
             if (invoice.getQuantity() > game.getQuantity()) {
-                throw new InvalidRequestException(); // Placeholder error until testing
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
             }
             game.setQuantity(game.getQuantity() - invoice.getQuantity());
             gameRepository.save(game);
 
-        } else if (invoice.getItemType().equals("T-shirts")) {
+        } else if (invoice.getItemType().equals("T-Shirts")) {
             TShirt tShirts = tShirtRepository.findById(invoice.getItemId()).get();
             invoice.setUnitPrice(tShirts.getPrice());
 
             if (invoice.getQuantity() > tShirts.getQuantity()) {
-                throw new InvalidRequestException();
+                throw new InvalidRequestException("There are not enough items in our inventory to satisfy this request.");
             }
             tShirts.setQuantity(tShirts.getQuantity() - invoice.getQuantity());
             tShirtRepository.save(tShirts);
