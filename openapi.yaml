@@ -1,0 +1,601 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /tshirts/{id}:
+    get:
+      tags:
+        - t-shirt-controller
+      operationId: getTShirtById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TShirt'
+    put:
+      tags:
+        - t-shirt-controller
+      operationId: updateTShirt
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TShirt'
+        required: true
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+        - t-shirt-controller
+      operationId: removeTShirt
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: No Content
+  /games/{id}:
+    get:
+      tags:
+        - game-controller
+      operationId: getGameById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Game'
+    put:
+      tags:
+        - game-controller
+      operationId: updateGame
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+        required: true
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+        - game-controller
+      operationId: deleteGame
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: No Content
+  /console/{id}:
+    get:
+      tags:
+        - console-controller
+      operationId: getConsoleById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Console'
+    put:
+      tags:
+        - console-controller
+      operationId: updateConsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Console'
+        required: true
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+        - console-controller
+      operationId: deleteConsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: No Content
+  /tshirts:
+    get:
+      tags:
+        - t-shirt-controller
+      operationId: getAllTShirts
+      parameters:
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: color
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TShirt'
+    post:
+      tags:
+        - t-shirt-controller
+      operationId: createTShirt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputTShirt'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TShirt'
+  /invoice:
+    post:
+      tags:
+        - invoice-controller
+      operationId: createInvoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputInvoice'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Invoice'
+  /games:
+    get:
+      tags:
+        - game-controller
+      operationId: getAllGames
+      parameters:
+        - name: studio
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: esrb
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+    post:
+      tags:
+        - game-controller
+      operationId: createGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputGame'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Game'
+  /console:
+    get:
+      tags:
+        - console-controller
+      operationId: getAllConsoles
+      parameters:
+        - name: manufacturer
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Console'
+    post:
+      tags:
+        - console-controller
+      operationId: addConsole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputConsole'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Console'
+  /tshirts/size/{size}:
+    get:
+      tags:
+        - t-shirt-controller
+      operationId: getTShirtsBySize
+      parameters:
+        - name: size
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TShirt'
+  /tshirts/color/{color}:
+    get:
+      tags:
+        - t-shirt-controller
+      operationId: getTShirtsByColor
+      parameters:
+        - name: color
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TShirt'
+components:
+  schemas:
+    InputTShirt:
+      type: object
+      properties:
+        size:
+          maxLength: 20
+          minLength: 0
+          type: string
+        color:
+          maxLength: 20
+          minLength: 0
+          type: string
+        description:
+          maxLength: 255
+          minLength: 0
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+    TShirt:
+      type: object
+      properties:
+        gettShirtId:
+          type: integer
+          format: int32
+        size:
+          maxLength: 20
+          minLength: 0
+          type: string
+        color:
+          maxLength: 20
+          minLength: 0
+          type: string
+        description:
+          maxLength: 255
+          minLength: 0
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+    InputGame:
+      type: object
+      properties:
+        title:
+          maxLength: 50
+          minLength: 0
+          type: string
+        esrbRating:
+          maxLength: 50
+          minLength: 0
+          type: string
+        description:
+          maxLength: 255
+          minLength: 0
+          type: string
+        price:
+          type: number
+        studio:
+          maxLength: 50
+          minLength: 0
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    Game:
+      type: object
+      properties:
+        game_id:
+          type: integer
+          format: int32
+        title:
+          maxLength: 50
+          minLength: 0
+          type: string
+        esrbRating:
+          maxLength: 50
+          minLength: 0
+          type: string
+        description:
+          maxLength: 255
+          minLength: 0
+          type: string
+        price:
+          type: number
+        studio:
+          maxLength: 50
+          minLength: 0
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    InputConsole:
+      type: object
+      properties:
+        model:
+          maxLength: 50
+          minLength: 0
+          type: string
+        manufacturer:
+          maxLength: 50
+          minLength: 0
+          type: string
+        memory_amount:
+          maxLength: 20
+          minLength: 0
+          type: string
+        processor:
+          maxLength: 20
+          minLength: 0
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+    Console:
+      type: object
+      properties:
+        console_id:
+          type: integer
+          format: int32
+        model:
+          maxLength: 50
+          minLength: 0
+          type: string
+        manufacturer:
+          maxLength: 50
+          minLength: 0
+          type: string
+        memory_amount:
+          maxLength: 20
+          minLength: 0
+          type: string
+        processor:
+          maxLength: 20
+          minLength: 0
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+    InputInvoice:
+      required:
+        - city
+        - itemId
+        - itemType
+        - name
+        - quantity
+        - state
+        - street
+        - zipCode
+      type: object
+      properties:
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        street:
+          maxLength: 30
+          minLength: 0
+          type: string
+        city:
+          maxLength: 30
+          minLength: 0
+          type: string
+        state:
+          maxLength: 2
+          minLength: 0
+          type: string
+        zipCode:
+          maxLength: 5
+          minLength: 0
+          type: string
+        itemType:
+          maxLength: 20
+          minLength: 0
+          type: string
+        itemId:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+    Invoice:
+      required:
+        - city
+        - id
+        - itemId
+        - itemType
+        - name
+        - processingFee
+        - quantity
+        - state
+        - street
+        - subtotal
+        - tax
+        - total
+        - unitPrice
+        - zipCode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          maxLength: 80
+          minLength: 0
+          type: string
+        street:
+          maxLength: 30
+          minLength: 0
+          type: string
+        city:
+          maxLength: 30
+          minLength: 0
+          type: string
+        state:
+          maxLength: 2
+          minLength: 0
+          type: string
+        zipCode:
+          maxLength: 5
+          minLength: 0
+          type: string
+        itemType:
+          maxLength: 20
+          minLength: 0
+          type: string
+        itemId:
+          type: integer
+          format: int32
+        unitPrice:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+        subtotal:
+          type: number
+        tax:
+          type: number
+        processingFee:
+          type: number
+        total:
+          type: number

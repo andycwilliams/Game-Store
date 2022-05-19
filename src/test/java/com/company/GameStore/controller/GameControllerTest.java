@@ -59,6 +59,9 @@ public class GameControllerTest {
         when(serviceLayer.saveGame(gameInput)).thenReturn(gameOutput);
         when(serviceLayer.findAllGames()).thenReturn(allGames);
         when(serviceLayer.findGame(gameId)).thenReturn(gameOutput);
+        when(serviceLayer.findGamesByEsrb("E")).thenReturn(allGames);
+        when(serviceLayer.findGamesByTitle("Mario")).thenReturn(allGames);
+        when(serviceLayer.findGamesByStudio("Nintendo")).thenReturn(allGames);
 
     }
 
@@ -80,6 +83,30 @@ public class GameControllerTest {
     @Test
     public void shouldGetAllGames() throws Exception {
         mockMvc.perform(get("/games"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allGamesString));
+    }
+
+    @Test
+    public void shouldGetAllGamesByTitle() throws Exception {
+        mockMvc.perform(get("/games" + "?title=Mario"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allGamesString));
+    }
+
+    @Test
+    public void shouldGetAllGamesByStudio() throws Exception {
+        mockMvc.perform(get("/games" + "?studio=Nintendo"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allGamesString));
+    }
+
+    @Test
+    public void shouldGetAllGamesEsrb() throws Exception {
+        mockMvc.perform(get("/games" + "?esrb=E"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesString));
