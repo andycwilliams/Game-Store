@@ -115,12 +115,6 @@ public class ServiceLayerTest {
         tShirtList.add(tShirt);
 
         TShirt tShirt2 = new TShirt();
-//        tShirt2.settShirtId(2);
-//        tShirt2.setSize("Large");
-//        tShirt2.setPrice(BigDecimal.valueOf(11.99));
-//        tShirt2.setQuantity(105);
-//        tShirt2.setDescription("This shirt is yellow");
-//        tShirt2.setColor("Yellow");
         tShirt2.setSize("Large");
         tShirt2.setPrice(BigDecimal.valueOf(10.99));
         tShirt2.setQuantity(100);
@@ -130,6 +124,8 @@ public class ServiceLayerTest {
         doReturn(tShirt).when(tShirtRepository).save(tShirt2);
         doReturn(Optional.of(tShirt)).when(tShirtRepository).findById(1);
         doReturn(tShirtList).when(tShirtRepository).findAll();
+        doReturn(tShirtList).when(tShirtRepository).findByColor("Purple");
+        doReturn(tShirtList).when(tShirtRepository).findBySize("Large");
     }
 
     private void setUpProcessingFeeRepositoryMock() {
@@ -390,10 +386,15 @@ public class ServiceLayerTest {
 
     @Test
     public void shouldFindTShirtsBySize() {
+        List<TShirt> fromService = service.findTShirtBySize("Large");
 
+        assertEquals(1, fromService.size());
     }
     @Test
     public void shouldFindTShirtsByColor() {
+        List<TShirt> fromService = service.findTShirtByColor("Purple");
+
+        assertEquals(1, fromService.size());
 
     }
     @Test
@@ -405,27 +406,21 @@ public class ServiceLayerTest {
     }
     @Test
     public void shouldFindTShirt() {
+        TShirt tShirt = new TShirt();
+        tShirt.settShirtId(1);
+        tShirt.setSize("Large");
+        tShirt.setDescription("This shirt is purple");
+        tShirt.setColor("Purple");
+        tShirt.setPrice(BigDecimal.valueOf(10.99));
+        tShirt.setQuantity(100);
+
+        TShirt tShirt1 = service.findTShirt(1);
+
+        assertEquals(tShirt, tShirt1);
 
     }
     @Test
     public void shouldSaveTShirt() {
-        // Arrange
-//        TShirt tShirt = new TShirt();
-//        tShirt.settShirtId(50);
-//        tShirt.setDescription("This shirt has an ID of 2");
-//        tShirt.setQuantity(100);
-//        tShirt.setColor("Turquoise");
-//        tShirt.setSize("Medium");
-//        tShirt.setPrice(BigDecimal.valueOf(20.99));
-//
-//        TShirt expectedOutput = new TShirt();
-//        expectedOutput.settShirtId(50);
-//        expectedOutput.setDescription("This shirt has an ID of 2");
-//        expectedOutput.setQuantity(100);
-//        expectedOutput.setColor("Turquoise");
-//        expectedOutput.setSize("Medium");
-//        expectedOutput.setPrice(BigDecimal.valueOf(20.99));
-
         TShirt saveShirt = new TShirt();
         saveShirt.setSize("Large");
         saveShirt.setPrice(BigDecimal.valueOf(10.99));
@@ -450,10 +445,34 @@ public class ServiceLayerTest {
     }
     @Test
     public void shouldUpdateTShirt() {
+        TShirt tShirt1 = new TShirt();
+        tShirt1.setColor("Purple");
+        tShirt1.setSize("Large");
+        tShirt1.setDescription("This shirt is purple");
+        tShirt1.setPrice(BigDecimal.valueOf(10.99));
+        tShirt1.setQuantity(100);
 
-    }
-    @Test
-    public void shouldRemoveTShirt() {
+        service.saveTShirt(tShirt1);
+
+        tShirt1.setColor("Yellow");
+        tShirt1.setSize("Small");
+        tShirt1.setDescription("This shirt is small yellow");
+        tShirt1.setPrice(BigDecimal.valueOf(12.99));
+        tShirt1.setQuantity(100);
+
+        TShirt tShirtSave = service.saveTShirt(tShirt1);
+
+        TShirt tShirt2 = new TShirt();
+        tShirt2.setColor("Yellow");
+        tShirt2.setSize("Small");
+        tShirt2.setDescription("This shirt is small yellow");
+        tShirt2.setPrice(BigDecimal.valueOf(12.99));
+        tShirt2.setQuantity(100);
+
+        TShirt tShirtSave2 = service.saveTShirt(tShirt2);
+
+        assertEquals(tShirtSave, tShirtSave2);
+
     }
 
     // --------------------------------- Invoice ---------------------------------
