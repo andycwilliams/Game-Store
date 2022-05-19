@@ -100,7 +100,7 @@ public class TShirtRepositoryTest {
         tShirt.settShirtId(1);
         tShirt.setSize("Large");
         tShirt.setColor("Green");
-        tShirt.setDescription("This shirt is green");
+        tShirt.setDescription("This shirt is green.");
         tShirt.setPrice(BigDecimal.valueOf(15.99));
         tShirt.setQuantity(50);
         tShirtRepository.save(tShirt);
@@ -109,7 +109,7 @@ public class TShirtRepositoryTest {
         tShirt.settShirtId(2);
         tShirt.setSize("Medium");
         tShirt.setColor("Red");
-        tShirt.setDescription("This shirt is red");
+        tShirt.setDescription("This shirt is red.");
         tShirt.setPrice(BigDecimal.valueOf(16.99));
         tShirt.setQuantity(55);
         tShirtRepository.save(tShirt);

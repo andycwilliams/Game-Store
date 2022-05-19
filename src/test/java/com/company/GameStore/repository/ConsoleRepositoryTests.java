@@ -37,33 +37,33 @@ public class ConsoleRepositoryTests {
         console = new Console();
         console.setModel("Playstation 5");
         console.setManufacturer("Sony");
-        console.setMemory_amount("99");
-        console.setProcessor("Processor Test");
-        console.setPrice(new BigDecimal("899.99"));
+        console.setMemory_amount("825 GB");
+        console.setProcessor("Sony Processor");
+        console.setPrice(new BigDecimal("499.99"));
         console.setQuantity(31);
 
         console2 = new Console();
-        console2.setModel("X Box");
+        console2.setModel("Xbox One S");
         console2.setManufacturer("Microsoft");
-        console2.setMemory_amount("77");
-        console2.setProcessor("Processor Test 2");
-        console2.setPrice(new BigDecimal("599.99"));
+        console2.setMemory_amount("1 TB");
+        console2.setProcessor("Xbox Processor");
+        console2.setPrice(new BigDecimal("499.99"));
         console2.setQuantity(15);
 
         console3 = new Console();
-        console3.setModel("Wii");
+        console3.setModel("Switch");
         console3.setManufacturer("Nintendo");
-        console3.setMemory_amount("12");
-        console3.setProcessor("Processor Test 3");
-        console3.setPrice(new BigDecimal("299.99"));
+        console3.setMemory_amount("64 GB");
+        console3.setProcessor("Nintendo Processor");
+        console3.setPrice(new BigDecimal("249.99"));
         console3.setQuantity(190);
 
         console4 = new Console();
         console4.setModel("Playstation 2");
         console4.setManufacturer("Sony");
-        console4.setMemory_amount("5");
-        console4.setProcessor("Processor Old");
-        console4.setPrice(new BigDecimal("9.99"));
+        console4.setMemory_amount("8 MB");
+        console4.setProcessor("Sony Processor");
+        console4.setPrice(new BigDecimal("299.99"));
         console4.setQuantity(3);
 
         consoleRepository.save(console);
