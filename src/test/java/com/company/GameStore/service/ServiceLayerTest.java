@@ -561,4 +561,5 @@ public class ServiceLayerTest {
         Invoice actualInvoice = service.saveInvoice(inputInvoice);
         assertEquals(outputInvoice, actualInvoice);
     }
+
 }
