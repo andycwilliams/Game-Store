@@ -79,6 +79,12 @@ public class ConsoleRepositoryTests {
     }
 
     @Test
+    public void shouldGetConsole() throws Exception {
+        Console findConsole = consoleRepository.findById(console.getConsole_id()).get();
+        assertEquals(console, findConsole);
+    }
+
+    @Test
     public void shouldUpdateConsole() throws Exception {
         Console console = new Console();
         console.setModel("Burger King Console");
@@ -99,14 +105,32 @@ public class ConsoleRepositoryTests {
 
         consoleRepository.save(console);
 
-        Optional<Console> consoleCompare = consoleRepository.findById(console.getConsole_id());
-        assertEquals(consoleCompare.get(), console);
+        Optional<Console> compareConsole = consoleRepository.findById(console.getConsole_id());
+        assertEquals(compareConsole.get(), console);
+    }
+
+    @Test
+    public void shouldAddConsole() throws Exception {
+        Console console = new Console();
+        console.setConsole_id(202);
+        console.setModel("Model Test");
+        console.setManufacturer("Manufacturer Test");
+        console.setMemory_amount("Memory Test");
+        console.setProcessor("Processor Test");
+        console.setPrice(new BigDecimal("19.99"));
+        console.setQuantity(55);
+
+        console = consoleRepository.save(console);
+        Console addConsole = consoleRepository.findById(console.getConsole_id()).get();
+        assertEquals(console, addConsole);
     }
 
     @Test
     public void shouldDeleteConsole() throws Exception {
-//        List<Console> consoleList = consoleRepository.findAll();
-//        assertFalse(console.isPresent());
+        console = consoleRepository.save(console);
+        consoleRepository.deleteById(console.getConsole_id());
+        Optional<Console> deleteConsole = consoleRepository.findById(console.getConsole_id());
+        assertFalse(deleteConsole.isPresent());
     }
 
     @Test

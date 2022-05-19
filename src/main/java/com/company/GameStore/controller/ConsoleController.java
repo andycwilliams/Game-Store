@@ -31,7 +31,9 @@ public class ConsoleController {
     public List<Console> getAllConsoles(@RequestParam(required = false) String manufacturer) {
         if (manufacturer != null) {
             return serviceLayer.findConsolesByManufacturer(manufacturer);
-        } else return serviceLayer.findAllConsoles();
+        } else {
+            return serviceLayer.findAllConsoles();
+        }
     }
 
     @PostMapping
