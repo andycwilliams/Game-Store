@@ -41,4 +41,5 @@ public class ControllerExceptionHandler {
         return responseEntity;
     }
 
+    // No null point exception
 }
